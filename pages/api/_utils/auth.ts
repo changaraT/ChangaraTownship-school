@@ -28,8 +28,8 @@ export const authenticate = (req: AuthenticatedRequest, res: VercelResponse) => 
 
 export async function getFullUserProfile(user: any) {
   if (user.role === 'teacher') {
-     const { data: teacherInfo } = await supabase.from("teachers").select("*").eq("user_id", user.id).single();
-     return { ...user, teacherInfo };
+    const { data: teacherInfo } = await supabase.from("teachers").select("*").eq("user_id", user.id).single();
+    return { ...user, teacherInfo };
   }
 
   if (user.role === 'parent') {
@@ -41,25 +41,30 @@ export async function getFullUserProfile(user: any) {
     if (parentLinks && parentLinks.length > 0) {
       const studentId = parentLinks[0].student_id;
       const { data: student } = await supabase.from("students").select("*").eq("id", studentId).single();
-      
+
       if (student) {
         const { data: fees } = await supabase.from("fees").select("*").eq("student_id", student.id);
         const { data: exams } = await supabase.from("exams").select("*").eq("student_id", student.id);
         const { data: announcements } = await supabase.from("announcements").select("*").order("created_at", { ascending: false }).limit(10);
         const { data: feeStructure } = await supabase.from("fee_structure").select("*").eq("class", student.class);
-        
-        return { 
-          ...user, 
-          parentInfo: { 
-            student, 
-            fees: fees || [], 
+
+        return {
+          ...user,
+          parentInfo: {
+            student,
+            fees: fees || [],
             exams: exams || [],
             announcements: announcements || [],
             feeStructure: feeStructure || []
-          } 
+          }
         };
       }
     }
   }
   return user;
 }
+// Export a default object with the main functions (customize as needed)
+export default {
+  authenticate,
+  getFullUserProfile,
+};
