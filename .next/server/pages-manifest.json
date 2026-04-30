@@ -3,7 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/[[...path]]": "pages/[[...path]].js",
-  "/api/finance/[...slug]": "pages/api/finance/[...slug].js",
+  "/api/auth/[...slug]": "pages/api/auth/[...slug].js",
   "/api/public/[...slug]": "pages/api/public/[...slug].js",
-  "/api/auth/[...slug]": "pages/api/auth/[...slug].js"
+  "/api/admin": "pages/api/admin.js"
 }
