@@ -1,1 +1,181 @@
-{"version":3,"caseSensitive":false,"basePath":"","rewrites":{"beforeFiles":[],"afterFiles":[{"source":"/api/exam-results","destination":"/api/academic/results","regex":"^\\/api\\/exam-results(?:\\/)?$","check":true},{"source":"/api/exam-results/:id","destination":"/api/academic/results/:id","regex":"^\\/api\\/exam-results(?:\\/([^\\/]+?))(?:\\/)?$","check":true},{"source":"/api/exams","destination":"/api/academic","regex":"^\\/api\\/exams(?:\\/)?$","check":true},{"source":"/api/exams/:id","destination":"/api/academic/:id","regex":"^\\/api\\/exams(?:\\/([^\\/]+?))(?:\\/)?$","check":true},{"source":"/api/fees","destination":"/api/finance","regex":"^\\/api\\/fees(?:\\/)?$","check":true},{"source":"/api/fees/:id","destination":"/api/finance/:id","regex":"^\\/api\\/fees(?:\\/([^\\/]+?))(?:\\/)?$","check":true},{"source":"/api/fee-structure","destination":"/api/finance/structure","regex":"^\\/api\\/fee-structure(?:\\/)?$","check":true},{"source":"/api/fee-structure/:id","destination":"/api/finance/structure/:id","regex":"^\\/api\\/fee-structure(?:\\/([^\\/]+?))(?:\\/)?$","check":true},{"source":"/api/announcements","destination":"/api/comms/announcements","regex":"^\\/api\\/announcements(?:\\/)?$","check":true},{"source":"/api/announcements/:id","destination":"/api/comms/announcements/:id","regex":"^\\/api\\/announcements(?:\\/([^\\/]+?))(?:\\/)?$","check":true},{"source":"/api/messages","destination":"/api/comms","regex":"^\\/api\\/messages(?:\\/)?$","check":true},{"source":"/api/messages/:path*","destination":"/api/comms/:path*","regex":"^\\/api\\/messages(?:\\/((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*))?(?:\\/)?$","check":true},{"source":"/api/stats","destination":"/api/admin","regex":"^\\/api\\/stats(?:\\/)?$","check":true},{"source":"/api/health","destination":"/api/admin","regex":"^\\/api\\/health(?:\\/)?$","check":true},{"source":"/api/parents","destination":"/api/admin","regex":"^\\/api\\/parents(?:\\/)?$","check":true}],"fallback":[]},"redirects":[{"source":"/:path+/","destination":"/:path+","permanent":true,"internal":true,"regex":"^(?:\\/((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*))\\/$"}],"headers":[]}
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [
+      {
+        "source": "/api/exam-results",
+        "destination": "/api/academic/results",
+        "regex": "^/api/exam-results(?:/)?$"
+      },
+      {
+        "source": "/api/exam-results/:id",
+        "destination": "/api/academic/results/:id",
+        "regex": "^/api/exam-results(?:/([^/]+?))(?:/)?$"
+      },
+      {
+        "source": "/api/exams",
+        "destination": "/api/academic",
+        "regex": "^/api/exams(?:/)?$"
+      },
+      {
+        "source": "/api/exams/:id",
+        "destination": "/api/academic/:id",
+        "regex": "^/api/exams(?:/([^/]+?))(?:/)?$"
+      },
+      {
+        "source": "/api/fees",
+        "destination": "/api/finance",
+        "regex": "^/api/fees(?:/)?$"
+      },
+      {
+        "source": "/api/fees/:id",
+        "destination": "/api/finance/:id",
+        "regex": "^/api/fees(?:/([^/]+?))(?:/)?$"
+      },
+      {
+        "source": "/api/fee-structure",
+        "destination": "/api/finance/structure",
+        "regex": "^/api/fee-structure(?:/)?$"
+      },
+      {
+        "source": "/api/fee-structure/:id",
+        "destination": "/api/finance/structure/:id",
+        "regex": "^/api/fee-structure(?:/([^/]+?))(?:/)?$"
+      },
+      {
+        "source": "/api/announcements",
+        "destination": "/api/comms/announcements",
+        "regex": "^/api/announcements(?:/)?$"
+      },
+      {
+        "source": "/api/announcements/:id",
+        "destination": "/api/comms/announcements/:id",
+        "regex": "^/api/announcements(?:/([^/]+?))(?:/)?$"
+      },
+      {
+        "source": "/api/messages",
+        "destination": "/api/comms",
+        "regex": "^/api/messages(?:/)?$"
+      },
+      {
+        "source": "/api/messages/:path*",
+        "destination": "/api/comms/:path*",
+        "regex": "^/api/messages(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      },
+      {
+        "source": "/api/stats",
+        "destination": "/api/admin",
+        "regex": "^/api/stats(?:/)?$"
+      },
+      {
+        "source": "/api/health",
+        "destination": "/api/admin",
+        "regex": "^/api/health(?:/)?$"
+      },
+      {
+        "source": "/api/parents",
+        "destination": "/api/admin",
+        "regex": "^/api/parents(?:/)?$"
+      }
+    ],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/academic/[...slug]",
+      "regex": "^/api/academic/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/academic/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/auth/[...slug]",
+      "regex": "^/api/auth/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/auth/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/comms/[...slug]",
+      "regex": "^/api/comms/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/comms/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/finance/[...slug]",
+      "regex": "^/api/finance/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/finance/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/public/[...slug]",
+      "regex": "^/api/public/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/public/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/students/[...slug]",
+      "regex": "^/api/students/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/students/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/api/teachers/[...slug]",
+      "regex": "^/api/teachers/(.+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/teachers/(?<nxtPslug>.+?)(?:/)?$"
+    },
+    {
+      "page": "/[[...path]]",
+      "regex": "^(?:/(.+?))?(?:/)?$",
+      "routeKeys": {
+        "nxtPpath": "nxtPpath"
+      },
+      "namedRegex": "^(?:/(?<nxtPpath>.+?))?(?:/)?$"
+    }
+  ],
+  "staticRoutes": [],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

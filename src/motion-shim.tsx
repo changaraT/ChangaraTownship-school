@@ -2,6 +2,7 @@ import * as React from "react";
 
 type PresenceProps = {
   children?: React.ReactNode;
+  [key: string]: any;
 };
 
 type MotionProxy = Record<string, React.ComponentType<any>>;

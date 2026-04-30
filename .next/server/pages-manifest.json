@@ -1,9 +1,16 @@
 {
   "/_app": "pages/_app.js",
+  "/[[...path]]": "pages/[[...path]].html",
+  "/api/academic/[...slug]": "pages/api/academic/[...slug].js",
+  "/api/admin": "pages/api/admin.js",
+  "/api/auth/[...slug]": "pages/api/auth/[...slug].js",
+  "/api/auth": "pages/api/auth.js",
+  "/api/comms/[...slug]": "pages/api/comms/[...slug].js",
+  "/api/finance/[...slug]": "pages/api/finance/[...slug].js",
+  "/api/public/[...slug]": "pages/api/public/[...slug].js",
+  "/api/students/[...slug]": "pages/api/students/[...slug].js",
+  "/api/teachers/[...slug]": "pages/api/teachers/[...slug].js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/[[...path]]": "pages/[[...path]].js",
-  "/api/auth/[...slug]": "pages/api/auth/[...slug].js",
-  "/api/public/[...slug]": "pages/api/public/[...slug].js",
-  "/api/admin": "pages/api/admin.js"
+  "/404": "pages/404.html"
 }

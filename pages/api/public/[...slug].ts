@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabase } from "../_utils/supabase";
+import { supabase } from "../../../lib/server/supabase";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { slug } = req.query;

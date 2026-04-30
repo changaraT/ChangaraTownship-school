@@ -1,16 +1,16 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
-import { supabase } from "../_utils/supabase";
-import { getFullUserProfile, JWT_SECRET, authenticate } from "../_utils/auth";
+import { serialize, SerializeOptions } from "cookie";
+import { supabase } from "../../../lib/server/supabase";
+import { getFullUserProfile, JWT_SECRET, authenticate } from "../../../lib/server/auth";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { slug } = req.query;
   const action = Array.isArray(slug) ? slug[0] : slug;
   const isProd = process.env.NODE_ENV === "production";
-  const cookieOptions = {
+  const cookieOptions: SerializeOptions = {
     httpOnly: true,
-    sameSite: (isProd ? "none" : "lax") as const,
+    sameSite: isProd ? "none" : "lax",
     secure: isProd,
     path: "/",
   };

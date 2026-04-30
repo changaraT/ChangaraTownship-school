@@ -1,4 +1,4 @@
-import { authenticate, getFullUserProfile } from "../_utils/auth";
+import { authenticate, getFullUserProfile } from "../../../lib/server/auth";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

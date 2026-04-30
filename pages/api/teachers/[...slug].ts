@@ -1,7 +1,7 @@
 import { VercelResponse } from "@vercel/node";
-import { supabase } from "../_utils/supabase";
-import { authenticate, AuthenticatedRequest } from "../_utils/auth";
-import { sendEmail } from "../_utils/mail";
+import { supabase } from "../../../lib/server/supabase";
+import { authenticate, AuthenticatedRequest } from "../../../lib/server/auth";
+import { sendEmail } from "../../../lib/server/mail";
 
 export default async function handler(req: AuthenticatedRequest, res: VercelResponse) {
   const { slug } = req.query;

@@ -1,6 +1,6 @@
 import { VercelResponse } from "@vercel/node";
-import { supabase, getAfricasTalkingSMS } from "../_utils/supabase";
-import { authenticate, AuthenticatedRequest } from "../_utils/auth";
+import { supabase, getAfricasTalkingSMS } from "../../../lib/server/supabase";
+import { authenticate, AuthenticatedRequest } from "../../../lib/server/auth";
 
 export default async function handler(req: AuthenticatedRequest, res: VercelResponse) {
   const { slug } = req.query;
