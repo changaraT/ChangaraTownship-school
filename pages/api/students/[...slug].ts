@@ -9,6 +9,31 @@ export default async function handler(req: AuthenticatedRequest, res: VercelResp
   try {
     const user = authenticate(req, res);
 
+    // POST /api/students/promote
+    if (id === 'promote' && req.method === 'POST') {
+      if (user.role !== 'headteacher') return res.status(403).json({ error: 'Forbidden' });
+      const { className } = req.body;
+      const promotionMap: Record<string, string> = {
+        'Playgroup': 'PP1',
+        'PP1': 'PP2',
+        'PP2': 'Grade 1',
+        'Grade 1': 'Grade 2',
+        'Grade 2': 'Grade 3',
+        'Grade 3': 'Grade 4',
+        'Grade 4': 'Grade 5',
+        'Grade 5': 'Grade 6',
+        'Grade 6': 'Grade 7 (JSS)',
+        'Grade 7 (JSS)': 'Grade 8 (JSS)',
+        'Grade 8 (JSS)': 'Grade 9 (JSS)',
+        'Grade 9 (JSS)': 'Graduated'
+      };
+      const nextClass = promotionMap[className];
+      if (!nextClass) return res.status(400).json({ error: 'No promotion path configured for this class.' });
+      const { error } = await supabase.from('students').update({ class: nextClass }).eq('class', className);
+      if (error) throw error;
+      return res.json({ from: className, to: nextClass });
+    }
+
     // GET /api/students
     if (req.method === "GET") {
       let query = supabase.from("students").select("*").order("name");
@@ -25,10 +50,17 @@ export default async function handler(req: AuthenticatedRequest, res: VercelResp
     // POST /api/students
     if (req.method === "POST") {
       if (user.role !== "headteacher" && user.role !== "teacher") return res.status(403).json({ error: "Forbidden" });
-      const { admission_number, name, class: className, parents } = req.body;
+      const { admission_number, name, class: className, parents, upi_number, health_complications, has_disability } = req.body;
       const { data: student, error } = await supabase.from("students").insert({
-        admission_number, name, class: className, 
-        parent_name: parents?.[0]?.name, parent_email: parents?.[0]?.email, parent_phone: parents?.[0]?.phone
+        admission_number,
+        name,
+        class: className,
+        upi_number,
+        health_complications,
+        has_disability,
+        parent_name: parents?.[0]?.name,
+        parent_email: parents?.[0]?.email,
+        parent_phone: parents?.[0]?.phone
       }).select().single();
       if (error) throw error;
 

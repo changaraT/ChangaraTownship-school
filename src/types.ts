@@ -19,6 +19,7 @@ export interface Student {
   admission_number: string;
   name: string;
   class: string;
+  upi_number?: string;
   parent_name?: string;
   parent_email: string;
   parent_phone: string;
@@ -50,9 +51,22 @@ export interface Fee {
 export interface ExamResult {
   id: number;
   student_id: number;
-  subject: string;
-  marks: number;
-  grade: string;
+  class?: string;
+  exam_type?: string;
   term: string;
   year: number;
+  marks?: number;
+  grade?: string;
+  math_marks?: number;
+  english_marks?: number;
+  kiswahili_marks?: number;
+  science_marks?: number;
+  social_studies_marks?: number;
+  creative_arts_marks?: number;
+  religious_education_marks?: number;
+  life_skills_marks?: number;
+  physical_education_marks?: number;
+  agriculture_marks?: number;
+  remarks?: string;
+  updated_at?: string;
 }
