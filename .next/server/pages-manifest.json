@@ -4,6 +4,7 @@
   "/_document": "pages/_document.js",
   "/[[...path]]": "pages/[[...path]].js",
   "/api/auth/[...slug]": "pages/api/auth/[...slug].js",
-  "/api/admin": "pages/api/admin.js",
-  "/api/public/[...slug]": "pages/api/public/[...slug].js"
+  "/api/students": "pages/api/students.js",
+  "/api/public/[...slug]": "pages/api/public/[...slug].js",
+  "/api/admin/[...slug]": "pages/api/admin/[...slug].js"
 }

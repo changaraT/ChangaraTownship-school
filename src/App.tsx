@@ -48,6 +48,7 @@ import {
   Pencil,
   FileText,
   Edit,
+  RefreshCw,
   CheckCircle2,
   AlertTriangle,
   ShieldOff,
@@ -85,6 +86,26 @@ const CBC_SUBJECTS = [
   { key: 'physical_education_marks', label: 'Physical Education' },
   { key: 'agriculture_marks', label: 'Agriculture' }
 ];
+
+const CLASS_CBC_SUBJECT_KEYS_MAP: Record<string, string[]> = {
+  Playgroup: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
+  PP1: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
+  PP2: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
+  'Grade 1': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 2': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 3': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 4': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 5': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 6': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 7 (JSS)': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 8 (JSS)': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 9 (JSS)': CBC_SUBJECTS.map((subject) => subject.key),
+};
+
+const getExamSubjectsForClass = (className: string) => {
+  const keys = CLASS_CBC_SUBJECT_KEYS_MAP[className] || CBC_SUBJECTS.map((subject) => subject.key);
+  return CBC_SUBJECTS.filter((subject) => keys.includes(subject.key));
+};
 
 const getCurrentAcademicTerm = (date = new Date()) => {
   const month = date.getMonth() + 1;
@@ -193,6 +214,7 @@ const Card = ({ children, className }: { children: React.ReactNode, className?: 
 // Professional Landing Page for Changara Township School
 const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
   const [studentCount, setStudentCount] = useState<number | null>(null);
+  const [announcements, setAnnouncements] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchStudentCount = async () => {
@@ -206,7 +228,21 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
         console.error('Failed to fetch student count', err);
       }
     };
+
+    const fetchAnnouncements = async () => {
+      try {
+        const res = await fetch('/api/public/announcements', { credentials: 'include' });
+        if (res.ok) {
+          const data = await res.json();
+          setAnnouncements(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch announcements:', err);
+      }
+    };
+
     fetchStudentCount();
+    fetchAnnouncements();
   }, []);
 
   return (
@@ -348,6 +384,48 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
           <div className="mt-10 flex flex-col items-center gap-4">
             <div className="w-16 h-1 bg-emerald-600 rounded-full"></div>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Institutional Heritage</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Announcements Section */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tighter leading-[1.1] mb-6">
+              Latest <span className="text-emerald-600">Announcements</span>
+            </h2>
+            <p className="text-xl text-slate-500 font-medium italic max-w-2xl mx-auto">
+              Stay informed with the latest updates, events, and important notices from Changara Township School.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {announcements.slice(0, 6).map((ann: any) => (
+              <Card key={ann.id} className="p-8 bg-white border border-slate-100 shadow-xl rounded-[2.5rem] group hover:shadow-2xl transition-all">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={cn(
+                    "w-12 h-12 rounded-2xl flex items-center justify-center text-white",
+                    ann.type === 'Alert' ? "bg-rose-500" : ann.type === 'Holiday' ? "bg-amber-500" : "bg-indigo-500"
+                  )}>
+                    <Bell size={20} />
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-black bg-slate-50 text-slate-400 px-3 py-1 rounded-full uppercase tracking-widest mb-2 inline-block">
+                      {ann.type}
+                    </span>
+                    <p className="text-[10px] font-bold text-slate-400 italic">{new Date(ann.created_at).toLocaleDateString()}</p>
+                  </div>
+                </div>
+                <h4 className="text-xl font-black text-slate-800 tracking-tight leading-none mb-4">{ann.title}</h4>
+                <p className="text-slate-600 leading-relaxed font-medium text-sm line-clamp-3">{ann.content}</p>
+              </Card>
+            ))}
+            {announcements.length === 0 && (
+              <div className="col-span-full py-20 text-center">
+                <Bell size={48} className="mx-auto text-slate-200 mb-4" />
+                <p className="text-slate-400 font-black italic tracking-tight text-xl">No announcements at this time.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -1867,7 +1945,7 @@ const ParentsManagement = () => {
   const itemsPerPage = 10;
 
   const fetchParents = async () => {
-    const res = await fetch('/api/parents', { credentials: 'include' });
+    const res = await fetch('/api/admin/parents', { credentials: 'include' });
     if (res.ok) setParents(await res.json());
   };
 
@@ -1877,7 +1955,7 @@ const ParentsManagement = () => {
 
   const filteredParents = parents.filter(p =>
     p.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.id.toLowerCase().includes(searchTerm.toLowerCase())
+    String(p.id).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredParents.length / itemsPerPage);
@@ -1901,6 +1979,9 @@ const ParentsManagement = () => {
           </div>
         </div>
         <div className="flex gap-4">
+          <Button onClick={fetchParents} className="bg-indigo-50 text-indigo-600 border border-indigo-200 px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-indigo-100 transition-all">
+            <RefreshCw size={16} /> Refresh List
+          </Button>
           <Button onClick={handlePrint} className="bg-slate-50 text-slate-600 border border-slate-200 px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-slate-100 transition-all">
             <Printer size={16} /> Print Roll
           </Button>
@@ -1925,7 +2006,7 @@ const ParentsManagement = () => {
               <tr key={p.id} className="group hover:bg-slate-50 transition-all">
                 <td className="px-10 py-6">
                   <span className="font-mono text-[10px] font-black text-indigo-400 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-100">
-                    {p.id.split('-')[0].toUpperCase()}
+                    {String(p.id).split('-')[0].toUpperCase()}
                   </span>
                 </td>
                 <td className="px-10 py-6">
@@ -2271,6 +2352,7 @@ const StudentsManagement = ({ role }: { role: string }) => {
         has_disability: false,
       });
       setParents([{ name: '', email: '', phone: '+254' }]);
+      alert('Student admitted successfully! Parent account created. Switch to Parents tab to see the new account.');
     } else {
       const errData = await res.json().catch(() => ({}));
       console.error('Admission error details:', errData);
@@ -2683,6 +2765,25 @@ const TeachersManagement = () => {
     'Physical Education'
   ];
 
+  const CLASS_ALL_SUBJECTS_MAP: Record<string, string[]> = {
+    Playgroup: ['Language Activities', 'Mathematical Activities', 'Environmental Activities', 'Psycho-motor Activities', 'Religious Education', 'Creative Arts', 'Life Skills', 'Physical Education'],
+    PP1: ['Language Activities', 'Mathematical Activities', 'Environmental Activities', 'Psycho-motor Activities', 'Religious Education', 'Creative Arts', 'Life Skills', 'Physical Education'],
+    PP2: ['Language Activities', 'Mathematical Activities', 'Environmental Activities', 'Psycho-motor Activities', 'Religious Education', 'Creative Arts', 'Life Skills', 'Physical Education'],
+    'Grade 1': ALL_SUBJECTS,
+    'Grade 2': ALL_SUBJECTS,
+    'Grade 3': ALL_SUBJECTS,
+    'Grade 4': ALL_SUBJECTS,
+    'Grade 5': ALL_SUBJECTS,
+    'Grade 6': ALL_SUBJECTS,
+    'Grade 7 (JSS)': ALL_SUBJECTS,
+    'Grade 8 (JSS)': ALL_SUBJECTS,
+    'Grade 9 (JSS)': ALL_SUBJECTS,
+  };
+
+  const getLearningAreasForClasses = (classes: string[]) => {
+    return Array.from(new Set(classes.flatMap((c) => CLASS_ALL_SUBJECTS_MAP[c] || ALL_SUBJECTS)));
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
@@ -2869,7 +2970,7 @@ const TeachersManagement = () => {
                       <ChevronRight size={10} className="text-indigo-400" /> Professional Focus
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {t.subjects.map(s => <span key={s} className="bg-emerald-50 px-3 py-1.5 rounded-lg text-[10px] font-black text-emerald-600 border border-emerald-100 tracking-wider font-mono uppercase">{s}</span>)}
+                      {getLearningAreasForClasses(t.classes || []).map(s => <span key={s} className="bg-emerald-50 px-3 py-1.5 rounded-lg text-[10px] font-black text-emerald-600 border border-emerald-100 tracking-wider font-mono uppercase">{s}</span>)}
                     </div>
                   </div>
                 </div>
@@ -3114,6 +3215,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
   }, [selectedClass, term, year, examType]);
 
   const filteredStudents = students.filter(s => s.class === selectedClass);
+  const currentAcademicSubjects = selectedClass ? getExamSubjectsForClass(selectedClass) : CBC_SUBJECTS;
 
   const handleLocalEdit = (studentId: number, field: string, value: any) => {
     setLocalEdits(prev => ({
@@ -3170,7 +3272,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
   };
 
   const handleDownloadCSV = () => {
-    const headers = ['Admission Number', 'Learner', 'Class', 'Term', 'Assessment', ...CBC_SUBJECTS.map(s => s.label), 'Remarks'];
+    const headers = ['Admission Number', 'Learner', 'Class', 'Term', 'Assessment', ...currentAcademicSubjects.map(s => s.label), 'Remarks'];
     const rows = filteredStudents.map(student => {
       const row = localEdits[student.id] || results.find(r => r.student_id === student.id) || {};
       return [
@@ -3179,7 +3281,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
         selectedClass,
         term,
         examType,
-        ...CBC_SUBJECTS.map(subject => row[subject.key] ?? ''),
+        ...currentAcademicSubjects.map(subject => row[subject.key] ?? ''),
         row.remarks || ''
       ];
     });
@@ -3318,7 +3420,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
               <thead>
                 <tr className="bg-slate-50/50 italic text-[10px] text-slate-400 uppercase tracking-[0.25em]">
                   <th className="px-10 py-6">Learner Record</th>
-                  {CBC_SUBJECTS.map(subject => (
+                  {currentAcademicSubjects.map(subject => (
                     <th key={subject.key} className="px-10 py-6 text-center">{subject.label}</th>
                   ))}
                   <th className="px-10 py-6">Teacher Remarks</th>
@@ -3335,7 +3437,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
                         <p className="font-black text-slate-800 tracking-tight">{student.name}</p>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">ID: {student.admission_number}</p>
                       </td>
-                      {CBC_SUBJECTS.map(subject => (
+                      {currentAcademicSubjects.map(subject => (
                         <td key={subject.key} className="px-6 py-6 text-center">
                           <select
                             value={draft[subject.key] ?? ''}
@@ -3378,7 +3480,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
                 })}
                 {filteredStudents.length === 0 && (
                   <tr>
-                    <td colSpan={CBC_SUBJECTS.length + 3} className="px-10 py-20 text-center text-slate-300 italic font-medium">No learners enrolled in {selectedClass}.</td>
+                    <td colSpan={currentAcademicSubjects.length + 3} className="px-10 py-20 text-center text-slate-300 italic font-medium">No learners enrolled in {selectedClass}.</td>
                   </tr>
                 )}
               </tbody>
@@ -3425,7 +3527,7 @@ const AnnouncementsManagement = ({ role }: { role?: string }) => {
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    const endpoint = editingId ? `/api/announcements/${editingId}` : '/api/announcements';
+    const endpoint = editingId ? `/api/comms/announcements/${editingId}` : '/api/comms/announcements';
     const method = editingId ? 'PATCH' : 'POST';
 
     const res = await fetch(endpoint, {
@@ -3452,7 +3554,7 @@ const AnnouncementsManagement = ({ role }: { role?: string }) => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to remove this bulletin?')) return;
-    const res = await fetch(`/api/announcements/${id}`, { method: 'DELETE', credentials: 'include' });
+    const res = await fetch(`/api/comms/announcements/${id}`, { method: 'DELETE', credentials: 'include' });
     if (res.ok) fetchAnnouncements();
   };
 

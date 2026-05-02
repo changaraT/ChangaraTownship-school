@@ -18,6 +18,20 @@ export const getSupabase = () => {
   return supabaseClient;
 };
 
+let supabaseAdminClient: any = null;
+
+export const getSupabaseAdmin = () => {
+  if (!supabaseAdminClient) {
+    const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "";
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+    if (!url || !serviceKey) {
+      return null; // Return null if service role not available
+    }
+    supabaseAdminClient = createClient(url, serviceKey);
+  }
+  return supabaseAdminClient;
+};
+
 export const supabase = new Proxy({} as any, {
   get: (_target, prop) => {
     return getSupabase()[prop];

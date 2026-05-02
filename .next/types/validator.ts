@@ -68,10 +68,10 @@ type ApiRouteConfig = {
   type __Unused = __Check
 }
 
-// Validate ../../pages/api/admin.ts
+// Validate ../../pages/api/admin/[...slug].ts
 {
   type __IsExpected<Specific extends ApiRouteConfig> = Specific
-  const handler = {} as typeof import("../../pages/api/admin.js")
+  const handler = {} as typeof import("../../pages/api/admin/[...slug].js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
@@ -126,6 +126,15 @@ type ApiRouteConfig = {
 {
   type __IsExpected<Specific extends ApiRouteConfig> = Specific
   const handler = {} as typeof import("../../pages/api/students/[...slug].js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../pages/api/students/index.ts
+{
+  type __IsExpected<Specific extends ApiRouteConfig> = Specific
+  const handler = {} as typeof import("../../pages/api/students/index.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

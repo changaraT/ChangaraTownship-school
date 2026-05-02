@@ -1,5 +1,5 @@
 import { VercelResponse } from "@vercel/node";
-import { supabase } from "../../../lib/server/supabase";
+import { supabase, getSupabaseAdmin } from "../../../lib/server/supabase";
 import { authenticate, AuthenticatedRequest } from "../../../lib/server/auth";
 
 export default async function handler(req: AuthenticatedRequest, res: VercelResponse) {
@@ -41,10 +41,36 @@ export default async function handler(req: AuthenticatedRequest, res: VercelResp
                     if (p.email) {
                         const lowerEmail = p.email.toLowerCase();
                         const { data: exists } = await supabase.from("users").select("id").eq("email", lowerEmail).single();
+
                         if (!exists) {
-                            await supabase.auth.signUp({ email: lowerEmail, password: admission_number.toString(), options: { data: { role: "parent" } } });
+                            const adminSupabase = getSupabaseAdmin();
+                            if (adminSupabase) {
+                                const { error: createError } = await adminSupabase.auth.admin.createUser({
+                                    email: lowerEmail,
+                                    password: admission_number.toString(),
+                                    user_metadata: { role: "parent" },
+                                    email_confirm: true
+                                });
+                                if (createError && !createError.message.toLowerCase().includes("already")) {
+                                    console.error("Failed to create parent user:", createError);
+                                    throw createError;
+                                }
+                            } else {
+                                console.warn("Service role key not set, falling back to signUp. Parent may need to confirm email.");
+                                const { error: signUpError } = await supabase.auth.signUp({
+                                    email: lowerEmail,
+                                    password: admission_number.toString(),
+                                    options: { data: { role: "parent" } }
+                                });
+                                if (signUpError && !signUpError.message.toLowerCase().includes("already")) {
+                                    console.error("Failed to sign up parent:", signUpError);
+                                    throw signUpError;
+                                }
+                            }
                         }
+
                         await supabase.from("parents").insert({ name: p.name || "Parent", email: lowerEmail, phone: p.phone, student_id: student.id });
+                        console.log(`Parent created: ${p.name} (${lowerEmail}) for student ${student.id}`);
                     }
                 }
             }
