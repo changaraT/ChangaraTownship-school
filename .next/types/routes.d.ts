@@ -5,7 +5,7 @@ type AppRoutes = never
 type PageRoutes = "/[[...path]]" | "/_app"
 type LayoutRoutes = never
 type RedirectRoutes = never
-type RewriteRoutes = "/api/announcements" | "/api/announcements/[id]" | "/api/exam-results" | "/api/exam-results/[id]" | "/api/exams" | "/api/exams/[id]" | "/api/fee-structure" | "/api/fee-structure/[id]" | "/api/fees" | "/api/fees/[id]" | "/api/health" | "/api/messages" | "/api/messages/[[...path]]" | "/api/parents" | "/api/stats"
+type RewriteRoutes = "/api/announcements" | "/api/announcements/[id]" | "/api/exam-results" | "/api/exam-results/[id]" | "/api/exams" | "/api/exams/[id]" | "/api/fee-structure" | "/api/fee-structure/[id]" | "/api/fees" | "/api/fees/[id]" | "/api/messages" | "/api/messages/[[...path]]" | "/api/parents" | "/api/stats"
 type Routes = AppRoutes | PageRoutes | LayoutRoutes | RedirectRoutes | RewriteRoutes
 
 
@@ -22,7 +22,6 @@ interface ParamMap {
   "/api/fee-structure/[id]": { "id": string; }
   "/api/fees": {}
   "/api/fees/[id]": { "id": string; }
-  "/api/health": {}
   "/api/messages": {}
   "/api/messages/[[...path]]": { "path"?: string[]; }
   "/api/parents": {}

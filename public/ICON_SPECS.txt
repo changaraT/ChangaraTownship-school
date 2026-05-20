@@ -1,0 +1,9 @@
+Place your PWA icon files here.
+
+Recommended default icon:
+- icon-512.png  (512x512 pixels)
+
+Optional additional icon:
+- icon-192.png  (192x192 pixels)
+
+Once the icon files are added, the PWA manifest will use them for installation on mobile and desktop devices.

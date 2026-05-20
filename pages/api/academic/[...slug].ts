@@ -31,6 +31,16 @@ export default async function handler(req: AuthenticatedRequest, res: VercelResp
           if (error) throw error;
           return res.json(data);
         }
+        if (id === 'update-positions') {
+          const updates = Array.isArray(req.body?.updates) ? req.body.updates : [];
+          for (const update of updates) {
+            if (update.id) {
+              const { error } = await supabase.from("exam_results").update({ position: update.position }).eq("id", update.id);
+              if (error) throw error;
+            }
+          }
+          return res.json({ message: "Positions updated" });
+        }
         const { data, error } = await supabase.from("exam_results").upsert(req.body).select();
         if (error) throw error;
         return res.json(data);

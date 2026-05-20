@@ -91,9 +91,9 @@ const CLASS_CBC_SUBJECT_KEYS_MAP: Record<string, string[]> = {
   Playgroup: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
   PP1: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
   PP2: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  'Grade 1': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 2': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 3': CBC_SUBJECTS.map((subject) => subject.key),
+  'Grade 1': ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
+  'Grade 2': ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
+  'Grade 3': ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
   'Grade 4': CBC_SUBJECTS.map((subject) => subject.key),
   'Grade 5': CBC_SUBJECTS.map((subject) => subject.key),
   'Grade 6': CBC_SUBJECTS.map((subject) => subject.key),
@@ -116,7 +116,25 @@ const getCurrentAcademicTerm = (date = new Date()) => {
 
 const getCurrentAcademicYear = (date = new Date()) => date.getFullYear().toString();
 
+const SCHOOL_LOGO_SRC = '/logo.jpg';
+
 const getFormattedToday = (date = new Date()) => date.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+const getMetricLabel = (score: number | null | undefined) => {
+  if (score === null || score === undefined || Number.isNaN(score)) return '';
+  if (score >= 80) return 'EE';
+  if (score >= 65) return 'ME';
+  if (score >= 50) return 'AE';
+  return 'BE';
+};
+
+const getMetricDescription = (score: number | null | undefined) => {
+  if (score === null || score === undefined || Number.isNaN(score)) return '';
+  if (score >= 80) return 'Exceeding Expectation';
+  if (score >= 65) return 'Meeting Expectation';
+  if (score >= 50) return 'Approaching Expectation';
+  return 'Below Expectation';
+};
 
 /** Utility for Tailwind classes */
 function cn(...inputs: ClassValue[]) {
@@ -251,9 +269,7 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-emerald-900 rounded-xl flex items-center justify-center text-white shadow-xl">
-              <School size={22} />
-            </div>
+            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-14 h-14 rounded-xl object-cover shadow-xl border border-slate-200" />
             <div className="hidden sm:block leading-none">
               <span className="font-black text-[13px] uppercase tracking-tighter block">Changara Township</span>
               <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Excellence in every step</span>
@@ -472,20 +488,30 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
               </div>
             </div>
           </div>
-          <div className="mt-20 pt-10 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex gap-6 order-2 md:order-1">
-              {[
-                { icon: Twitter, label: 'Twitter' },
-                { icon: Facebook, label: 'Facebook' },
-                { icon: Instagram, label: 'Instagram' }
-              ].map(({ icon: Icon, label }) => (
-                <span key={label} className="text-slate-400 hover:text-emerald-600 cursor-pointer transition-colors" title={label}>
-                  <Icon size={18} />
-                </span>
-              ))}
+          <div className="mt-20 pt-10 border-t border-slate-50 flex flex-col items-center gap-8">
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative w-20 h-20 overflow-hidden rounded-2xl shadow-xl border-2 border-slate-100">
+                <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-full h-full object-cover" />
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-lg font-black text-slate-900 tracking-tight">Changara Township School</p>
+                <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Nurturing Excellence • Building Futures</p>
+              </div>
             </div>
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center order-1 md:order-2 flex-grow">© 2026 Changara Township • Built for Digital Excellence</p>
-            <div className="hidden md:block w-[120px] order-3"></div> {/* Spacer to help centering */}
+            <div className="flex gap-8 items-center justify-center">
+              <div className="flex gap-6">
+                {[
+                  { icon: Twitter, label: 'Twitter' },
+                  { icon: Facebook, label: 'Facebook' },
+                  { icon: Instagram, label: 'Instagram' }
+                ].map(({ icon: Icon, label }) => (
+                  <span key={label} className="text-slate-400 hover:text-emerald-600 cursor-pointer transition-colors" title={label}>
+                    <Icon size={20} />
+                  </span>
+                ))}
+              </div>
+            </div>
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center">© 2026 Changara Township • Built for Digital Excellence</p>
           </div>
         </div>
       </footer>
@@ -572,8 +598,8 @@ const AuthPage = ({ onBack }: { onBack: () => void }) => {
 
       <div className="w-full max-w-[460px] space-y-8 relative z-10">
         <div className="text-center space-y-4">
-          <div className="w-20 h-20 bg-slate-900 text-white rounded-[2rem] mx-auto flex items-center justify-center shadow-2xl relative">
-            <School size={36} />
+          <div className="relative mx-auto w-24 h-24 overflow-hidden rounded-[2rem] shadow-2xl border border-slate-100">
+            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-full h-full object-cover" />
             <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
               <ShieldCheck size={18} />
             </div>
@@ -660,6 +686,7 @@ const AcademicsParentView = ({ data }: { data: any }) => {
   const [examType, setExamType] = useState('End Term');
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [totalStudents, setTotalStudents] = useState<number | null>(null);
 
   const fetchResults = async () => {
     setLoading(true);
@@ -667,6 +694,12 @@ const AcademicsParentView = ({ data }: { data: any }) => {
       const res = await fetch(`/api/exam-results?studentId=${data.student.id}&term=${encodeURIComponent(term)}&year=${year}&examType=${encodeURIComponent(examType)}`, { credentials: 'include' });
       if (res.ok) {
         setResults(await res.json());
+      }
+      // Fetch total students in class
+      const classRes = await fetch(`/api/students?class=${encodeURIComponent(data.student.class)}`, { credentials: 'include' });
+      if (classRes.ok) {
+        const classData = await classRes.json();
+        setTotalStudents(classData.length);
       }
     } finally {
       setLoading(false);
@@ -677,14 +710,113 @@ const AcademicsParentView = ({ data }: { data: any }) => {
     fetchResults();
   }, [term, year, examType]);
 
-  const result = results[0]; // Since it filters by studentId, term, year, examType it should be 1 record with all subjects
+  const latestExam = results[0] || null;
+  const position = latestExam?.position ?? null;
+  const previousExam = data.previousExam || (results.length > 1 ? results[1] : null);
+  const academicSubjects = getExamSubjectsForClass(data.student.class);
 
-  const subjects = [
-    { key: 'math_marks', label: 'Mathematics' },
-    { key: 'english_marks', label: 'English Language' },
-    { key: 'kiswahili_marks', label: 'Kiswahili Language' },
-    { key: 'science_marks', label: 'Science & Art' }
-  ];
+  const getInlineLogoDataUrl = async () => {
+    try {
+      const response = await fetch(SCHOOL_LOGO_SRC);
+      const blob = await response.blob();
+      return await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(blob);
+      });
+    } catch {
+      return SCHOOL_LOGO_SRC;
+    }
+  };
+
+  const renderParentReportHtml = async (logoSrc: string) => {
+    const subjectRows = academicSubjects.map(sub => {
+      const marks = latestExam?.[sub.key];
+      const metric = getMetricLabel(marks);
+      const description = getMetricDescription(marks);
+      return `
+        <tr>
+          <td>${sub.label}</td>
+          <td>${marks ?? 'N/A'}</td>
+          <td>${metric || '-'}</td>
+          <td>${description || '-'}</td>
+        </tr>`;
+    }).join('');
+
+    return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${data.student.name} - ${examType} Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #102a43; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .logo { width: 110px; height: 110px; object-fit: cover; border-radius: 22px; margin: 0 auto 18px; }
+    h1 { margin: 0; font-size: 28px; letter-spacing: -0.04em; }
+    p { margin: 4px 0; }
+    .meta { color: #475569; font-size: 13px; margin-top: 8px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    th, td { border: 1px solid #cbd5e1; padding: 12px 14px; text-align: left; }
+    th { background: #f8fafc; font-weight: 800; }
+    tr:nth-child(even) { background: #f8fafc; }
+    .footer { margin-top: 32px; font-size: 12px; color: #64748b; text-align: center; }
+    @media print { body { margin: 0; } .noprint { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="${logoSrc}" alt="Changara School Logo" class="logo" />
+    <h1>Changara Township School</h1>
+    <p class="meta">${examType} • ${term} ${year}</p>
+    <p class="meta">${data.student.name} | Admission: ${data.student.admission_number} | Class: ${data.student.class}</p>
+    ${position ? `<p class="meta">Position: ${position} out of ${totalStudents || 'class'}</p>` : ''}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Subject</th>
+        <th>Marks</th>
+        <th>Metric</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${subjectRows}
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Generated on ${new Date().toLocaleDateString()} by Changara Township School
+  </div>
+</body>
+</html>`;
+  };
+
+  const handlePrintAcademicReport = async () => {
+    if (!latestExam) return;
+    const logoSrc = await getInlineLogoDataUrl();
+    const html = await renderParentReportHtml(logoSrc);
+    const printWindow = window.open('', '', 'width=1200,height=900');
+    if (!printWindow) return;
+    printWindow.document.write(html + '<script>window.print(); window.close();</script>');
+    printWindow.document.close();
+  };
+
+  const handleDownloadReport = async () => {
+    if (!latestExam) return;
+    const logoSrc = await getInlineLogoDataUrl();
+    const html = await renderParentReportHtml(logoSrc);
+    const safeFileName = `${data.student.name.replace(/[^a-z0-9]/gi, '_')}_${examType}_${term}_${year}_report.html`;
+    const blob = new Blob([html], { type: 'text/html' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = safeFileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  };
 
   return (
     <div className="space-y-12">
@@ -733,39 +865,41 @@ const AcademicsParentView = ({ data }: { data: any }) => {
               <div>
                 <h3 className="text-2xl font-black text-slate-900 tracking-tight">Competency Mastery</h3>
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{examType} | {term} - {year}</p>
+                {latestExam?.position && (
+                  <p className="text-[12px] font-bold text-indigo-600 mt-1">Position: {latestExam.position} out of {totalStudents || 'class'}</p>
+                )}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
               {loading ? (
-                <div className="col-span-2 py-20 flex justify-center"><Loader2 className="animate-spin text-indigo-600" /></div>
-              ) : !result ? (
-                <div className="col-span-2 py-20 text-center opacity-30 flex flex-col items-center gap-4">
+                <div className="col-span-full py-20 flex justify-center"><Loader2 className="animate-spin text-indigo-600" /></div>
+              ) : !latestExam ? (
+                <div className="col-span-full py-20 text-center opacity-30 flex flex-col items-center gap-4">
                   <Target size={40} />
                   <p className="font-bold italic">Academic records for this assessment cycle have not been ratified by the class teacher.</p>
                 </div>
               ) : (
-                subjects.map((sub) => {
-                  const marks = result[sub.key];
-                  if (marks === undefined || marks === null) return null;
-                  const label = marks >= 80 ? 'EE' : marks >= 60 ? 'ME' : marks >= 40 ? 'AE' : 'BE';
-                  const detailedLabel = marks >= 80 ? 'Exceeding Expectation' : marks >= 60 ? 'Meeting Expectation' : marks >= 40 ? 'Approaching Expectation' : 'Below Expectation';
-                  const colorClass = marks >= 80 ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : marks >= 60 ? 'text-indigo-600 bg-indigo-50 border-indigo-100' : marks >= 40 ? 'text-amber-600 bg-amber-50 border-amber-100' : 'text-rose-600 bg-rose-50 border-rose-100';
+                academicSubjects.map((sub) => {
+                  const marks = latestExam[sub.key];
+                  const label = marks >= 80 ? 'EE' : marks >= 65 ? 'ME' : marks >= 50 ? 'AE' : 'BE';
+                  const detailedLabel = marks >= 80 ? 'Exceeding Expectation' : marks >= 65 ? 'Meeting Expectation' : marks >= 50 ? 'Approaching Expectation' : 'Below Expectation';
+                  const colorClass = marks >= 80 ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : marks >= 65 ? 'text-indigo-600 bg-indigo-50 border-indigo-100' : marks >= 50 ? 'text-amber-600 bg-amber-50 border-amber-100' : 'text-rose-600 bg-rose-50 border-rose-100';
 
                   return (
-                    <div key={sub.key} className="flex justify-between items-center p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:bg-white hover:shadow-2xl transition-all group relative overflow-hidden">
+                    <div key={sub.key} className="flex flex-col justify-between p-5 bg-slate-50 rounded-[2rem] border border-slate-100 hover:bg-white hover:shadow-lg transition-all group relative overflow-hidden min-h-[170px]">
                       <div className="relative z-10">
-                        <p className="font-black text-slate-800 text-xl leading-none tracking-tight mb-2">{sub.label}</p>
-                        <div className={cn("inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-widest", colorClass)}>
-                          <div className={cn("w-2 h-2 rounded-full", marks >= 80 ? "bg-emerald-500" : marks >= 60 ? "bg-indigo-500" : marks >= 40 ? "bg-amber-500" : "bg-rose-500")}></div>
+                        <p className="font-black text-slate-800 text-base leading-tight tracking-tight mb-2">{sub.label}</p>
+                        <div className={cn("inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-[0.2em]", colorClass)}>
+                          <div className={cn("w-2 h-2 rounded-full", marks >= 80 ? "bg-emerald-500" : marks >= 65 ? "bg-indigo-500" : marks >= 50 ? "bg-amber-500" : "bg-rose-500")}></div>
                           {detailedLabel}
                         </div>
                       </div>
-                      <div className="relative z-10 text-right">
-                        <p className="text-5xl font-black text-slate-900 tracking-tighter leading-none group-hover:scale-110 transition-transform origin-right">{label}</p>
-                        <p className="text-[10px] font-bold text-slate-400 mt-2 italic">CBC Matrix v2</p>
+                      <div className="relative z-10 text-right mt-6">
+                        <p className="text-4xl font-black text-slate-900 tracking-tighter leading-none">{marks ?? 'N/A'}</p>
+                        <p className="text-[10px] font-bold text-slate-400 mt-2 italic">CBC Matrix</p>
                       </div>
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-slate-100/50 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-indigo-50/50 transition-colors"></div>
+                      <div className="absolute top-0 right-0 w-20 h-20 bg-slate-100/50 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-indigo-50/50 transition-colors"></div>
                     </div>
                   );
                 })
@@ -773,7 +907,7 @@ const AcademicsParentView = ({ data }: { data: any }) => {
             </div>
           </Card>
 
-          {result && (
+          {latestExam && (
             <div className="bg-amber-50 p-8 rounded-[2.5rem] border border-amber-100 flex items-start gap-6">
               <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-amber-500 shadow-sm flex-shrink-0">
                 <ShieldAlert size={24} />
@@ -800,9 +934,9 @@ const AcademicsParentView = ({ data }: { data: any }) => {
                 </div>
               </div>
               <div className="p-10 bg-white/5 rounded-[2.5rem] border border-white/10 italic text-lg leading-relaxed text-slate-300 font-medium font-serif min-h-[200px] flex items-center">
-                {result?.remarks ? `"${result.remarks}"` : `"The instructional board's qualitative assessment for this period is still undergoing validation."`}
+                {latestExam?.remarks ? `"${latestExam.remarks}"` : `"The instructional board's qualitative assessment for this period is still undergoing validation."`}
               </div>
-              <div className="pt-8 border-t border-white/10 flex justify-between items-center">
+              <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-black">CT</div>
                   <div>
@@ -810,9 +944,14 @@ const AcademicsParentView = ({ data }: { data: any }) => {
                     <p className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">Digital Identity</p>
                   </div>
                 </div>
-                <Button onClick={() => window.print()} className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-100 shadow-lg">
-                  <Printer size={14} /> Official Report card
-                </Button>
+                <div className="flex flex-wrap gap-3">
+                  <Button onClick={handleDownloadReport} className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-100 shadow-lg">
+                    <Download size={14} /> Download Report
+                  </Button>
+                  <Button onClick={handlePrintAcademicReport} className="bg-indigo-500 text-white px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-indigo-400 shadow-lg">
+                    <Printer size={14} /> Print Report
+                  </Button>
+                </div>
               </div>
             </div>
           </Card>
@@ -879,9 +1018,9 @@ const ParentDashboardView = ({ data }: { data: any }) => {
         <Card className="p-10 bg-white border-slate-100 rounded-[3rem] shadow-xl hover:shadow-2xl transition-all group">
           <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Academic Ranking</p>
           <p className="text-4xl font-black text-slate-800">
-            {data.exams.length > 0 ? `${Math.round(data.exams.reduce((s: number, e: any) => s + e.marks, 0) / data.exams.length)}%` : 'N/A'}
+            {data.exams.length > 0 && data.exams[0]?.position ? data.exams[0].position : (data.exams.length > 0 ? `${Math.round(data.exams.reduce((s: number, e: any) => s + e.marks, 0) / data.exams.length)}%` : 'N/A')}
           </p>
-          <p className="text-[10px] font-bold mt-4 text-slate-400 tracking-tight">Average performance score</p>
+          <p className="text-[10px] font-bold mt-4 text-slate-400 tracking-tight">{data.exams.length > 0 && data.exams[0]?.position ? 'Class Position' : 'Average performance score'}</p>
         </Card>
 
         <Card className="p-10 bg-emerald-500 text-white rounded-[3rem] shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-transform">
@@ -947,8 +1086,17 @@ const ParentFeesView = ({ data }: { data: any }) => {
   const [selectedYear, setSelectedYear] = useState('2026');
   const [selectedTerm, setSelectedTerm] = useState('Term 1');
 
-  const currentStructure = data.feeStructure?.find((s: any) => s.term === selectedTerm);
-  const relevantFees = data.fees.filter((f: any) => f.term === selectedTerm && f.year === selectedYear);
+  const currentStructure = data.feeStructure?.find((s: any) => s.term === selectedTerm && s.year?.toString() === selectedYear);
+  const relevantFees = data.fees.filter((f: any) => f.term === selectedTerm && f.year?.toString() === selectedYear);
+  const previousTerm = selectedTerm === 'Term 2' ? 'Term 1' : selectedTerm === 'Term 3' ? 'Term 2' : '';
+  const previousStructure = previousTerm ? data.feeStructure?.find((s: any) => s.term === previousTerm && s.year?.toString() === selectedYear) : null;
+  const previousPayments = previousTerm ? data.fees.filter((f: any) => f.term === previousTerm && f.year?.toString() === selectedYear) : [];
+  const previousPaid = previousPayments.reduce((sum: number, f: any) => sum + (Number(f.amount) || 0), 0);
+  const previousDue = previousStructure ? Number(previousStructure.amount || 0) - previousPaid : 0;
+  const previousArrears = Math.max(0, previousDue);
+  const currentPaid = relevantFees.reduce((sum: number, f: any) => sum + (Number(f.amount) || 0), 0);
+  const currentDue = Math.max(0, (currentStructure ? Number(currentStructure.amount || 0) : 0) - currentPaid);
+  const totalOutstanding = previousArrears + currentDue;
 
   return (
     <div className="space-y-12">
@@ -993,9 +1141,20 @@ const ParentFeesView = ({ data }: { data: any }) => {
                 <p className="text-[10px] uppercase font-black text-slate-400 tracking-widest">Mandatory Base Rate</p>
                 <p className="text-4xl font-black text-white tracking-tighter">KSH {currentStructure.amount.toLocaleString()}</p>
               </div>
+              {previousTerm && (
+                <div className="space-y-2 rounded-3xl bg-slate-800/70 p-4 border border-white/10">
+                  <p className="text-[10px] uppercase font-black text-slate-400 tracking-widest">Arrears from {previousTerm}</p>
+                  <p className="text-3xl font-black text-amber-300 tracking-tighter">KSH {previousArrears.toLocaleString()}</p>
+                  <p className="text-[10px] text-slate-300">Outstanding amount carried forward from previous term.</p>
+                </div>
+              )}
               <div className="space-y-2 pt-4 border-t border-white/10">
                 <p className="text-[10px] uppercase font-black text-slate-400 tracking-widest">Level Coverage</p>
                 <p className="font-bold text-indigo-400">{selectedTerm}, {selectedYear}</p>
+              </div>
+              <div className="space-y-2 pt-4 border-t border-white/10">
+                <p className="text-[10px] uppercase font-black text-slate-400 tracking-widest">Total Outstanding</p>
+                <p className="text-4xl font-black text-white tracking-tighter">KSH {totalOutstanding.toLocaleString()}</p>
               </div>
               <Button className="w-full h-14 bg-white text-slate-900 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl mt-4">
                 Settle Dues Online
@@ -1060,6 +1219,7 @@ const ParentFeesView = ({ data }: { data: any }) => {
                             <body onload="window.print()">
                               <div class="receipt">
                                  <div class="header">
+                                    <img src="/logo.jpg" alt="Changara Logo" style="width: 96px; height: 96px; object-fit: cover; border-radius: 22px; margin-bottom: 18px;" />
                                     <h1>CHANGARA TOWNSHIP</h1>
                                     <p>Statutory Payment Voucher</p>
                                  </div>
@@ -1105,6 +1265,10 @@ const StudentDashboard = ({ data, onBack }: { data: any, onBack: () => void }) =
   const totalFees = data.fees.reduce((sum: number, fee: any) => sum + Number(fee.amount), 0);
   const paidFees = data.fees.filter((f: any) => f.status === 'paid').reduce((sum: number, fee: any) => sum + Number(fee.amount), 0);
   const balance = totalFees - paidFees;
+  const academicSubjects = getExamSubjectsForClass(data.student.class);
+  const latestExam = Array.isArray(data.exams) ? data.exams[0] : data.exams;
+  const previousExam = data.previousExam || (Array.isArray(data.exams) && data.exams.length > 1 ? data.exams[1] : null);
+  const position = latestExam?.position || data.position || data.student.position || null;
 
   return (
     <motion.div
@@ -1205,65 +1369,95 @@ const StudentDashboard = ({ data, onBack }: { data: any, onBack: () => void }) =
       )}
 
       {activeTab === 'academics' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 text-left">
-          <Card className="p-10 space-y-10 bg-white border border-slate-100 shadow-2xl rounded-[3.5rem] relative overflow-hidden">
-            <div className="flex items-center gap-4 border-b border-slate-50 pb-8">
-              <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-inner">
-                <GraduationCap size={24} />
+        <div className="space-y-10">
+          <Card className="p-10 bg-white border border-slate-100 shadow-2xl rounded-[3.5rem]">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+              <div>
+                <h3 className="text-3xl font-black text-slate-900 tracking-tight">Academic Performance</h3>
+                <p className="text-sm text-slate-500 italic">Full subject breakdown, metrics and position for this assessment cycle.</p>
               </div>
               <div>
-                <h3 className="text-2xl font-black text-slate-900 tracking-tight">Competency Mastery</h3>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Validated Assessment Outcomes</p>
+                {position ? (
+                  <span className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-indigo-50 text-indigo-700 font-black uppercase text-[10px] tracking-widest">
+                    <Trophy size={16} /> Position {position} in {data.student.class}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-slate-100 text-slate-500 font-black uppercase text-[10px] tracking-widest">
+                    <span className="font-black">Position pending</span>
+                  </span>
+                )}
               </div>
             </div>
-            <div className="space-y-6 max-h-[600px] overflow-auto pr-4 subtle-scrollbar">
-              {data.exams.length === 0 ? (
-                <p className="text-slate-400 text-center py-20 italic font-medium">Academic assessment registry empty.</p>
-              ) : (
-                data.exams.map((res: any) => (
-                  <div key={res.id} className="flex justify-between items-center p-6 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-white hover:shadow-xl transition-all group">
-                    <div className="space-y-1">
-                      <p className="font-black text-slate-800 tracking-tight text-lg leading-none truncate max-w-[200px]">{res.subject}</p>
-                      <p className="text-[10px] font-bold text-slate-400 italic">{res.term} | {res.year}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-4xl font-black text-slate-900 tracking-tighter leading-none group-hover:scale-110 transition-transform origin-right">{res.marks}%</p>
-                      <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-2">{res.grade}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </Card>
 
-          <Card className="p-10 bg-slate-900 text-white rounded-[3.5rem] shadow-2xl relative overflow-hidden flex flex-col justify-between">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-            <div className="space-y-8 relative z-10">
-              <div className="flex items-center gap-4 border-b border-white/10 pb-8">
-                <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white">
-                  <MessageSquare size={24} />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-black text-white tracking-tight">Lead Teacher Evaluative Remarks</h3>
-                  <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest italic">Professional Qualitative Assessment</p>
-                </div>
-              </div>
-              <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 italic text-lg leading-relaxed text-slate-300 font-medium font-serif min-h-[200px] flex items-center">
-                "{data.student.name.split(' ')[0]} continues to demonstrate exceptional competency in creative areas. Social integration is excellent. Steady progress observed in all learning areas."
-              </div>
-              <div className="flex justify-between items-center pt-8 border-t border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center font-black text-white text-xs">TR</div>
-                  <div>
-                    <p className="text-[11px] font-black leading-none">Class Facilitator</p>
-                    <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Digital Auth Signature</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+              {academicSubjects.map((subject) => {
+                const score = latestExam?.[subject.key];
+                const metric = getMetricLabel(score);
+                const description = getMetricDescription(score);
+
+                return (
+                  <div key={subject.key} className="flex flex-col justify-between p-5 bg-slate-50 rounded-[2rem] border border-slate-100 min-h-[170px]">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.35em] text-slate-500">{subject.label}</p>
+                      <p className="text-4xl font-black text-slate-900 mt-4">{score ?? 'N/A'}</p>
+                    </div>
+                    {metric ? (
+                      <div className="mt-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.18em] text-slate-700">
+                        {metric} · {description}
+                      </div>
+                    ) : (
+                      <p className="text-[10px] text-slate-400 mt-5">Score not recorded.</p>
+                    )}
                   </div>
-                </div>
-                <Button className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2">
-                  <Printer size={14} /> Official Report card
-                </Button>
-              </div>
+                );
+              })}
             </div>
+
+            {previousExam && (
+              <div className="mt-10 p-8 bg-indigo-900 text-white rounded-[2.5rem] border border-indigo-700">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div>
+                    <h4 className="text-2xl font-black tracking-tight">Previous Exam Comparison</h4>
+                    <p className="text-sm text-indigo-200 italic">Subject-level progress comparison against the prior assessment.</p>
+                  </div>
+                  <span className="px-4 py-2 bg-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.25em]">
+                    Previous exam available
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                  {academicSubjects.map((subject) => {
+                    const currentValue = latestExam?.[subject.key];
+                    const previousValue = previousExam?.[subject.key];
+                    const delta = typeof currentValue === 'number' && typeof previousValue === 'number' ? currentValue - previousValue : null;
+
+                    return (
+                      <div key={subject.key} className="p-6 bg-white/10 rounded-[2rem] border border-white/10">
+                        <p className="text-xs font-black uppercase tracking-[0.3em] text-indigo-200">{subject.label}</p>
+                        <div className="mt-4 flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-2xl font-black">{currentValue ?? '--'}</p>
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-indigo-200">Now</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-2xl font-black">{previousValue ?? '--'}</p>
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-indigo-200">Before</p>
+                          </div>
+                        </div>
+                        {delta !== null && (
+                          <p className={cn(
+                            'mt-4 text-sm font-black uppercase tracking-[0.2em]',
+                            delta >= 0 ? 'text-emerald-300' : 'text-rose-300'
+                          )}>
+                            {delta >= 0 ? `↑ +${delta}` : `↓ ${Math.abs(delta)}`} change
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </Card>
         </div>
       )}
@@ -1357,7 +1551,7 @@ const DashboardShell = () => {
 
   useEffect(() => {
     if (user?.role === 'parent') {
-      setActiveTab('child');
+      setActiveTab('dashboard');
     } else if (user?.role === 'teacher') {
       setActiveTab('cbc_dashboard');
     }
@@ -1409,7 +1603,7 @@ const DashboardShell = () => {
       )}>
         <div className="flex items-center justify-between lg:justify-start gap-4 px-2">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg rotate-3">CT</div>
+            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-16 h-16 rounded-2xl object-cover shadow-lg" />
             <div>
               <span className="text-white font-black text-lg tracking-tight block leading-tight">Changara</span>
               <span className="text-[9px] font-black text-indigo-400 uppercase tracking-[0.25em]">Township</span>
@@ -1709,28 +1903,46 @@ const DashboardHome = () => {
   const [academicYear, setAcademicYear] = useState(getCurrentAcademicYear());
   const [term, setTerm] = useState(getCurrentAcademicTerm());
   const [isMounted, setIsMounted] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchStats = async () => {
+    setRefreshing(true);
+    try {
+      const res = await fetch(`/api/admin/stats?year=${academicYear}&term=${term}`, { credentials: 'include' });
+      const data = await res.json();
+      if (data && !data.error) {
+        setStats(data);
+      }
+    } catch (err) {
+      console.error("Stats fetch error:", err);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
-    fetch(`/api/stats?year=${academicYear}&term=${term}`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (data && !data.error) {
-          setStats(data);
-        }
-      });
+    fetchStats();
 
+    // Poll stats every 15 seconds for near-real-time dashboard updates
+    const iv = setInterval(() => {
+      fetchStats();
+    }, 15000);
+    return () => clearInterval(iv);
+  }, [academicYear, term]);
+
+  useEffect(() => {
     fetch('/api/public/announcements', { credentials: 'include' })
       .then(res => res.json())
       .then(setAnnouncements)
       .catch(err => console.error("Announcements fetch error:", err));
-  }, [academicYear, term]);
+  }, []);
 
   const cards = [
-    { label: 'Total Revenue', value: stats.totalFees ? `KSH ${stats.totalFees.toLocaleString()}` : 'KSH 0', icon: Wallet, color: 'emerald', sub: 'Gross Collections', trend: '+12%' },
-    { label: 'Learner Cohort', value: stats.students, icon: Users, color: 'indigo', sub: 'Institutional Roll', trend: '+5%' },
-    { label: 'Faculty Active', value: stats.teachers, icon: GraduationCap, color: 'purple', sub: 'Deployment Status', trend: 'Stable' },
-    { label: 'Link Readiness', value: stats.parents, icon: ShieldCheck, color: 'amber', sub: 'Parent Synchronization', trend: '98%' },
+    { label: 'Fee Collections', value: stats.totalFees ? `KSH ${stats.totalFees.toLocaleString()}` : 'KSH 0', icon: Wallet, color: 'emerald', sub: 'Gross Collections', trend: '+12%' },
+    { label: 'Students', value: stats.students, icon: Users, color: 'indigo', sub: 'Active Learners', trend: '+5%' },
+    { label: 'Teachers', value: stats.teachers, icon: GraduationCap, color: 'purple', sub: 'Faculty Strength', trend: 'Stable' },
+    { label: 'Parents', value: stats.parents, icon: ShieldCheck, color: 'amber', sub: 'Parent Accounts', trend: '98%' },
   ];
 
   const pieData = [
@@ -1778,6 +1990,9 @@ const DashboardHome = () => {
             <CalendarDays size={16} className="text-indigo-600" />
             {getFormattedToday()}
           </div>
+          <button onClick={fetchStats} disabled={refreshing} className="ml-auto p-2 hover:bg-slate-100 rounded-lg transition-all disabled:opacity-50">
+            <RefreshCw size={16} className={refreshing ? "animate-spin text-indigo-600" : "text-slate-400"} />
+          </button>
         </div>
       </div>
 
@@ -1830,8 +2045,8 @@ const DashboardHome = () => {
             </button>
           </div>
           <div className="h-[350px] w-full min-w-0 relative">
-            {isMounted && (
-              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            {isMounted && stats && (
+              <ResponsiveContainer width="100%" height="100%" minWidth={300} minHeight={200}>
                 <BarChart data={stats?.academicTrends?.length ? stats.academicTrends : [{ term: 'Term 1', avg: 72 }, { term: 'Term 2', avg: 85 }, { term: 'Term 3', avg: 78 }]}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                   <XAxis dataKey="term" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 900 }} dy={15} />
@@ -1859,8 +2074,8 @@ const DashboardHome = () => {
           </div>
 
           <div className="h-[250px] w-full relative min-w-0">
-            {isMounted && (
-              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            {isMounted && stats && (
+              <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={150}>
                 <PieChart>
                   <Pie
                     data={pieData}
@@ -2115,58 +2330,81 @@ const FeeStructureManagement = () => {
         </div>
       </div>
 
-      <AnimatePresence>
-        {showAdd && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
-            <Card className="p-10 border-none shadow-2xl rounded-[3rem] bg-white border-2 border-slate-50">
-              <div className="flex justify-between items-center mb-10">
-                <h3 className="text-xl font-black text-slate-800 tracking-tight">New Level Rate Configuration</h3>
-                <button onClick={() => setShowAdd(false)} className="text-slate-300 hover:text-slate-600 transition-colors">
-                  <X size={24} />
-                </button>
+      {showAdd && (
+        <Card className="p-10 border-none shadow-2xl rounded-[3rem] bg-white border-2 border-slate-50">
+          <div className="flex justify-between items-center mb-10">
+            <h3 className="text-xl font-black text-slate-800 tracking-tight">New Level Rate Configuration</h3>
+            <button onClick={() => setShowAdd(false)} className="text-slate-300 hover:text-slate-600 transition-colors">
+              <X size={24} />
+            </button>
+          </div>
+          <form onSubmit={handleBulkAdd} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Target Grade/Level</label>
+                <select className="w-full h-16 bg-slate-50 px-6 rounded-2xl font-black text-xs uppercase tracking-widest border-none outline-none focus:ring-2 focus:ring-slate-900 transition-all" value={formData.class} onChange={e => setFormData({ ...formData, class: e.target.value })} required>
+                  <option value="">Select Level Category</option>
+                  <option value="Foundation & Pre-Primary">Foundation & Pre-Primary (PP1-PP2)</option>
+                  <option value="Lower/Upper Primary">Lower/Upper Primary (Grades 1-6)</option>
+                  <option value="Junior Secondary (JSS)">Junior Secondary (Grades 7-9)</option>
+                </select>
               </div>
-              <form onSubmit={handleBulkAdd} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Target Grade/Level</label>
-                    <select className="w-full h-16 bg-slate-50 px-6 rounded-2xl font-black text-xs uppercase tracking-widest border-none outline-none focus:ring-2 focus:ring-slate-900 transition-all" value={formData.class} onChange={e => setFormData({ ...formData, class: e.target.value })} required>
-                      <option value="">Select Level Category</option>
-                      <option value="Foundation & Pre-Primary">Foundation & Pre-Primary (PP1-PP2)</option>
-                      <option value="Lower/Upper Primary">Lower/Upper Primary (Grades 1-6)</option>
-                      <option value="Junior Secondary (JSS)">Junior Secondary (Grades 7-9)</option>
-                    </select>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 1 Rate (KSH)</label>
-                    <Input className="h-16 bg-slate-50 border-none rounded-2xl font-black text-lg" type="number" value={formData.term1} onChange={e => setFormData({ ...formData, term1: e.target.value })} required placeholder="0.00" />
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 2 Rate (KSH)</label>
-                    <Input className="h-16 bg-slate-50 border-none rounded-2xl font-black text-lg" type="number" value={formData.term2} onChange={e => setFormData({ ...formData, term2: e.target.value })} required placeholder="0.00" />
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 3 Rate (KSH)</label>
-                    <Input className="h-16 bg-slate-50 border-none rounded-2xl font-black text-lg" type="number" value={formData.term3} onChange={e => setFormData({ ...formData, term3: e.target.value })} required placeholder="0.00" />
-                  </div>
-                </div>
-                <div className="flex gap-4 pt-4">
-                  <Button type="submit" disabled={saving} className="flex-1 h-16 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
-                    {saving ? <Loader2 className="animate-spin" /> : <ShieldCheck size={20} />}
-                    Commit Rate Schedule to Registry
-                  </Button>
-                  <Button type="button" onClick={() => setShowAdd(false)} className="px-10 h-16 bg-slate-50 text-slate-400 rounded-2xl font-black text-[10px] uppercase tracking-widest">Cancel</Button>
-                </div>
-              </form>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 1 Rate (KSH)</label>
+                <input
+                  className="h-16 w-full bg-slate-50 border-none rounded-2xl font-black text-lg px-4 outline-none transition-all focus:ring-2 focus:ring-slate-900"
+                  type="text"
+                  autoComplete="off"
+                  value={formData.term1}
+                  onChange={e => setFormData({ ...formData, term1: e.target.value.replace(/[^0-9]/g, '') })}
+                  required
+                  placeholder="0.00"
+                />
+              </div>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 2 Rate (KSH)</label>
+                <input
+                  className="h-16 w-full bg-slate-50 border-none rounded-2xl font-black text-lg px-4 outline-none transition-all focus:ring-2 focus:ring-slate-900"
+                  type="text"
+                  autoComplete="off"
+                  value={formData.term2}
+                  onChange={e => setFormData({ ...formData, term2: e.target.value.replace(/[^0-9]/g, '') })}
+                  required
+                  placeholder="0.00"
+                />
+              </div>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 3 Rate (KSH)</label>
+                <input
+                  className="h-16 w-full bg-slate-50 border-none rounded-2xl font-black text-lg px-4 outline-none transition-all focus:ring-2 focus:ring-slate-900"
+                  type="text"
+                  autoComplete="off"
+                  value={formData.term3}
+                  onChange={e => setFormData({ ...formData, term3: e.target.value.replace(/[^0-9]/g, '') })}
+                  required
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+            <div className="flex gap-4 pt-4">
+              <Button type="submit" disabled={saving} className="flex-1 h-16 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
+                {saving ? <Loader2 className="animate-spin" /> : <ShieldCheck size={20} />}
+                Commit Rate Schedule to Registry
+              </Button>
+              <Button type="button" onClick={() => setShowAdd(false)} className="px-10 h-16 bg-slate-50 text-slate-400 rounded-2xl font-black text-[10px] uppercase tracking-widest">Cancel</Button>
+            </div>
+          </form>
+        </Card>
+      )}
 
       <div className="bg-white rounded-[3.5rem] border border-slate-100 shadow-2xl overflow-hidden print:shadow-none print:border-none">
-        <div className="p-12 border-b border-slate-50 flex justify-between items-center bg-slate-50/20">
-          <div className="space-y-2">
-            <h3 className="text-2xl font-black text-slate-900 tracking-tight">Institutional Billing Matrix</h3>
-            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] italic">Authorized 2026 Academic Cycle Rates</p>
+        <div className="p-12 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center bg-slate-50/20 gap-6">
+          <div className="flex items-center gap-4">
+            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-20 h-20 rounded-2xl object-cover shadow-sm" />
+            <div className="space-y-2">
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Institutional Billing Matrix</h3>
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] italic">Authorized 2026 Academic Cycle Rates</p>
+            </div>
           </div>
           <div className="hidden print:block text-right">
             <p className="font-black text-xs">Changara Township</p>
@@ -2677,7 +2915,8 @@ const TeachersManagement = () => {
     name: '',
     classes: [] as string[],
     subjects: [] as string[],
-    teacher_role: 'Subject Teacher'
+    teacher_role: 'Subject Teacher',
+    localAuth: true
   });
 
   const fetchTeachers = async () => {
@@ -2720,14 +2959,17 @@ const TeachersManagement = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ ...formData, assignments })
+      body: JSON.stringify({ ...formData, assignments, localAuth: formData.localAuth })
     });
     if (res.ok) {
       fetchTeachers();
       fetchMatrix();
       setShowAdd(false);
-      setFormData({ email: '', password: '', name: '', classes: [], subjects: [], teacher_role: 'Subject Teacher' });
+      setFormData({ email: '', password: '', name: '', classes: [], subjects: [], teacher_role: 'Subject Teacher', localAuth: true });
       alert('Faculty member onboarded.');
+    } else {
+      const body = await res.json().catch(() => ({}));
+      alert('Failed to create teacher: ' + (body?.error || body?.message || 'Unknown error'));
     }
   };
 
@@ -2863,6 +3105,19 @@ const TeachersManagement = () => {
                   <option value="Subject Teacher">Subject Teacher (Standard)</option>
                   <option value="Class Teacher">Class Teacher (Full Management)</option>
                 </select>
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Credential Provisioning</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    id="localAuth"
+                    type="checkbox"
+                    checked={formData.localAuth}
+                    onChange={e => setFormData({ ...formData, localAuth: e.target.checked })}
+                    className="w-4 h-4"
+                  />
+                  <label htmlFor="localAuth" className="text-sm font-bold">Headteacher-provisioned login (no email verification)</label>
+                </div>
               </div>
             </div>
 
@@ -3217,6 +3472,22 @@ const ExamsManagement = ({ role }: { role: string }) => {
   const filteredStudents = students.filter(s => s.class === selectedClass);
   const currentAcademicSubjects = selectedClass ? getExamSubjectsForClass(selectedClass) : CBC_SUBJECTS;
 
+  const getMetricLabel = (score: number | null) => {
+    if (score === null || score === undefined || Number.isNaN(score)) return '';
+    if (score >= 80) return 'EE';
+    if (score >= 65) return 'ME';
+    if (score >= 50) return 'AE';
+    return 'BE';
+  };
+
+  const getMetricDescription = (score: number | null) => {
+    if (score === null || score === undefined || Number.isNaN(score)) return '';
+    if (score >= 80) return 'Exceeding Expectation';
+    if (score >= 65) return 'Meeting Expectation';
+    if (score >= 50) return 'Approaching Expectation';
+    return 'Beginning Expectation';
+  };
+
   const handleLocalEdit = (studentId: number, field: string, value: any) => {
     setLocalEdits(prev => ({
       ...prev,
@@ -3231,26 +3502,23 @@ const ExamsManagement = ({ role }: { role: string }) => {
     if (!selectedClass) return;
     const payload = filteredStudents.map(student => {
       const row = localEdits[student.id] || results.find(r => r.student_id === student.id) || {};
-      return {
+      const entry: any = {
         id: row?.id,
         student_id: student.id,
         class: selectedClass,
         exam_type: examType,
         term,
         year: parseInt(year, 10),
-        math_marks: row.math_marks ?? null,
-        english_marks: row.english_marks ?? null,
-        kiswahili_marks: row.kiswahili_marks ?? null,
-        science_marks: row.science_marks ?? null,
-        social_studies_marks: row.social_studies_marks ?? null,
-        creative_arts_marks: row.creative_arts_marks ?? null,
-        religious_education_marks: row.religious_education_marks ?? null,
-        life_skills_marks: row.life_skills_marks ?? null,
-        physical_education_marks: row.physical_education_marks ?? null,
-        agriculture_marks: row.agriculture_marks ?? null,
         remarks: row.remarks || '',
+        position: 1,
         updated_at: new Date().toISOString()
       };
+
+      currentAcademicSubjects.forEach(subject => {
+        entry[subject.key] = row[subject.key] ?? null;
+      });
+
+      return entry;
     });
 
     setSaving(true);
@@ -3262,7 +3530,10 @@ const ExamsManagement = ({ role }: { role: string }) => {
       body: JSON.stringify({ results: payload })
     });
     if (res.ok) {
-      setMessage('Results published. Parents can now view the new grades.');
+      setMessage('Results published. Computing positions...');
+      await computeAndUpdatePositions();
+      setMessage('✓ Results published with positions computed.');
+      await new Promise(r => setTimeout(r, 2000));
       await fetchExistingResults();
     } else {
       const errData = await res.json().catch(() => ({}));
@@ -3271,8 +3542,53 @@ const ExamsManagement = ({ role }: { role: string }) => {
     setSaving(false);
   };
 
+  const computeAndUpdatePositions = async () => {
+    // Fetch all results for this class/term/year/examType
+    const res = await fetch(`/api/exam-results?className=${encodeURIComponent(selectedClass)}&term=${encodeURIComponent(term)}&year=${encodeURIComponent(year)}&examType=${encodeURIComponent(examType)}`, { credentials: 'include' });
+    if (!res.ok) return;
+    const allResults = await res.json();
+
+    // Compute total marks for each student
+    const studentTotals = allResults.map((result: any) => {
+      const subjects = currentAcademicSubjects;
+      const total = subjects.reduce((sum: number, subj: any) => {
+        const mark = result[subj.key];
+        return sum + (mark != null ? Number(mark) : 0);
+      }, 0);
+      return { student_id: result.student_id, total };
+    });
+
+    // Sort by total descending
+    studentTotals.sort((a, b) => b.total - a.total);
+
+    // Assign positions (handle ties by same position)
+    let currentPosition = 1;
+    let previousTotal = -1;
+    const positionMap: Record<number, number> = {};
+    studentTotals.forEach((student, index) => {
+      if (student.total !== previousTotal) {
+        currentPosition = index + 1;
+        previousTotal = student.total;
+      }
+      positionMap[student.student_id] = currentPosition;
+    });
+
+    // Update positions in database
+    const updatePayload = allResults.map((result: any) => ({
+      id: result.id,
+      position: positionMap[result.student_id]
+    }));
+
+    await fetch('/api/exam-results/update-positions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ updates: updatePayload })
+    });
+  };
+
   const handleDownloadCSV = () => {
-    const headers = ['Admission Number', 'Learner', 'Class', 'Term', 'Assessment', ...currentAcademicSubjects.map(s => s.label), 'Remarks'];
+    const headers = ['Admission Number', 'Learner', 'Class', 'Term', 'Assessment', ...currentAcademicSubjects.map(s => s.label), 'Position', 'Remarks'];
     const rows = filteredStudents.map(student => {
       const row = localEdits[student.id] || results.find(r => r.student_id === student.id) || {};
       return [
@@ -3282,6 +3598,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
         term,
         examType,
         ...currentAcademicSubjects.map(subject => row[subject.key] ?? ''),
+        row.position ?? '',
         row.remarks || ''
       ];
     });
@@ -3295,6 +3612,64 @@ const ExamsManagement = ({ role }: { role: string }) => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+
+  const handlePrintResults = () => {
+    const printWindow = window.open('', '', 'width=1200,height=800');
+    if (!printWindow) return;
+    const printContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${selectedClass} - ${term} - ${examType}</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .logo { width: 100px; height: 100px; object-fit: cover; border-radius: 24px; margin: 0 auto 20px; }
+    h1 { font-size: 22px; margin: 0 0 10px; }
+    p.subtitle { margin: 0; color: #555; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    th, td { border: 1px solid #333; padding: 10px; text-align: center; }
+    th { background-color: #f4f5f7; font-weight: bold; }
+    tr:nth-child(even) { background-color: #fafafb; }
+    .learner-col { text-align: left; }
+    @media print { body { margin: 0; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="${SCHOOL_LOGO_SRC}" alt="School Logo" class="logo" />
+    <h1>${selectedClass} - ${term} ${year}</h1>
+    <p class="subtitle">${examType} Results | Changara Township School</p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="learner-col">Learner</th>
+        ${currentAcademicSubjects.map(s => `<th>${s.label}</th>`).join('')}
+        <th>Position</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${filteredStudents.map(student => {
+      const row = results.find(r => r.student_id === student.id) || {};
+      return `<tr>
+          <td class="learner-col"><strong>${student.name}</strong> (${student.admission_number})</td>
+          ${currentAcademicSubjects.map(subject => `<td>${row[subject.key] ?? '-'}</td>`).join('')}
+          <td><strong>${row.position ?? '-'}</strong></td>
+        </tr>`;
+    }).join('')}
+    </tbody>
+  </table>
+  <p style="margin-top: 30px; font-size: 12px; text-align: center; color: #666;">
+    Generated on ${new Date().toLocaleDateString()} | Changara Township School
+  </p>
+  <script>window.print(); window.close();</script>
+</body>
+</html>
+    `;
+    printWindow.document.write(printContent);
+    printWindow.document.close();
   };
 
   const handlePromoteClass = async () => {
@@ -3397,7 +3772,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
                   Download CSV
                 </button>
                 <button
-                  onClick={() => window.print()}
+                  onClick={handlePrintResults}
                   className="rounded-2xl bg-slate-900 px-5 py-3 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-slate-900/10"
                 >
                   Print Report
@@ -3423,6 +3798,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
                   {currentAcademicSubjects.map(subject => (
                     <th key={subject.key} className="px-10 py-6 text-center">{subject.label}</th>
                   ))}
+                  <th className="px-10 py-6 text-center">Position</th>
                   <th className="px-10 py-6">Teacher Remarks</th>
                   <th className="px-10 py-6 text-right">Status</th>
                 </tr>
@@ -3437,24 +3813,52 @@ const ExamsManagement = ({ role }: { role: string }) => {
                         <p className="font-black text-slate-800 tracking-tight">{student.name}</p>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">ID: {student.admission_number}</p>
                       </td>
-                      {currentAcademicSubjects.map(subject => (
-                        <td key={subject.key} className="px-6 py-6 text-center">
-                          <select
-                            value={draft[subject.key] ?? ''}
-                            className={cn(
-                              "w-20 h-14 text-center font-black rounded-2xl border-none focus:ring-4 transition-all text-xs appearance-none cursor-pointer",
-                              draft[subject.key] ? "bg-indigo-600 text-white shadow-lg" : "bg-slate-50 text-slate-400"
-                            )}
-                            onChange={(e) => handleLocalEdit(student.id, subject.key, e.target.value ? parseInt(e.target.value, 10) : null)}
-                          >
-                            <option value="">-</option>
-                            <option value="100">EE</option>
-                            <option value="75">ME</option>
-                            <option value="50">AE</option>
-                            <option value="25">BE</option>
-                          </select>
-                        </td>
-                      ))}
+                      {currentAcademicSubjects.map(subject => {
+                        const score = draft[subject.key] != null ? Number(draft[subject.key]) : null;
+                        const metric = getMetricLabel(score);
+
+                        return (
+                          <td key={subject.key} className="px-6 py-6 text-center">
+                            <div className="space-y-2">
+                              <input
+                                type="number"
+                                min={0}
+                                max={100}
+                                value={score ?? ''}
+                                onChange={(e) => {
+                                  const value = e.target.value ? Math.max(0, Math.min(100, parseInt(e.target.value, 10))) : null;
+                                  handleLocalEdit(student.id, subject.key, value);
+                                }}
+                                className="w-20 h-14 text-center font-black rounded-2xl border border-slate-200 bg-slate-50 focus:ring-4 focus:ring-indigo-200 outline-none text-xs"
+                                placeholder="0"
+                              />
+                              {metric && (
+                                <div className="space-y-1 text-center">
+                                  <span className={cn(
+                                    'inline-flex items-center justify-center px-2 py-1 rounded-full text-[10px] font-black tracking-[0.25em]',
+                                    metric === 'EE' ? 'bg-emerald-100 text-emerald-700' :
+                                      metric === 'ME' ? 'bg-indigo-100 text-indigo-700' :
+                                        metric === 'AE' ? 'bg-amber-100 text-amber-700' :
+                                          'bg-slate-100 text-slate-600'
+                                  )}>
+                                    {score}% • {metric}
+                                  </span>
+                                  <p className="text-[9px] text-slate-400">{getMetricDescription(score)}</p>
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        );
+                      })}
+                      <td className="px-10 py-6 text-center">
+                        <div className="flex items-center justify-center">
+                          {draft.position ? (
+                            <span className="text-2xl font-black text-indigo-600">{draft.position}</span>
+                          ) : (
+                            <span className="text-slate-300 italic text-xs">Pending</span>
+                          )}
+                        </div>
+                      </td>
                       <td className="px-10 py-6 min-w-[300px]">
                         <textarea
                           className="w-full h-12 bg-slate-50 rounded-xl px-4 py-2 border-none outline-none focus:ring-4 focus:ring-indigo-600/10 text-xs font-medium resize-none group-hover:h-24 transition-all"
@@ -3503,7 +3907,6 @@ const AnnouncementsManagement = ({ role }: { role?: string }) => {
   const [showAdd, setShowAdd] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({ title: '', content: '', type: 'General' });
-  const announcementTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isManagement = role === 'headteacher';
 
@@ -3513,17 +3916,6 @@ const AnnouncementsManagement = ({ role }: { role?: string }) => {
   };
 
   useEffect(() => { fetchAnnouncements(); }, []);
-
-  const handleAnnouncementContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const start = e.target.selectionStart;
-    const end = e.target.selectionEnd;
-    setFormData({ ...formData, content: e.target.value });
-    setTimeout(() => {
-      if (announcementTextareaRef.current) {
-        announcementTextareaRef.current.setSelectionRange(start, end);
-      }
-    }, 0);
-  };
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -3569,56 +3961,53 @@ const AnnouncementsManagement = ({ role }: { role?: string }) => {
         )}
       </div>
 
-      <AnimatePresence>
-        {showAdd && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
-            <Card className="p-10 bg-white border-2 border-rose-50 shadow-2xl rounded-[3rem]">
-              <div className="flex justify-between items-center mb-8">
-                <h3 className="text-xl font-black text-slate-800">{editingId ? 'Edit News Perspective' : 'Draft New Bulletin'}</h3>
-                <button onClick={() => { setShowAdd(false); setEditingId(null); }} className="text-slate-400 hover:text-rose-600 transition-colors">
-                  <X size={24} />
-                </button>
-              </div>
-              <form onSubmit={handleAdd} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Headline</label>
-                    <Input className="h-14 font-bold" placeholder="Notice Title" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Bulletin Type</label>
-                    <select
-                      className="w-full h-14 px-6 rounded-xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-rose-500 font-bold"
-                      value={formData.type}
-                      onChange={e => setFormData({ ...formData, type: e.target.value })}
-                    >
-                      <option value="General">General Notice</option>
-                      <option value="Alert">Urgent Alert</option>
-                      <option value="Event">Upcoming Event</option>
-                      <option value="Holiday">School Holiday</option>
-                    </select>
-                  </div>
+      {showAdd && (
+        <div>
+          <Card className="p-10 bg-white border-2 border-rose-50 shadow-2xl rounded-[3rem]">
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="text-xl font-black text-slate-800">{editingId ? 'Edit News Perspective' : 'Draft New Bulletin'}</h3>
+              <button onClick={() => { setShowAdd(false); setEditingId(null); }} className="text-slate-400 hover:text-rose-600 transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+            <form onSubmit={handleAdd} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Headline</label>
+                  <Input className="h-14 font-bold" placeholder="Notice Title" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Detailed Content</label>
-                  <textarea
-                    ref={announcementTextareaRef}
-                    className="w-full h-40 p-6 rounded-2xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-rose-500 font-medium"
-                    placeholder="Enter announcement details..."
-                    value={formData.content}
-                    onChange={handleAnnouncementContentChange}
-                    required
-                  />
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Bulletin Type</label>
+                  <select
+                    className="w-full h-14 px-6 rounded-xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-rose-500 font-bold"
+                    value={formData.type}
+                    onChange={e => setFormData({ ...formData, type: e.target.value })}
+                  >
+                    <option value="General">General Notice</option>
+                    <option value="Alert">Urgent Alert</option>
+                    <option value="Event">Upcoming Event</option>
+                    <option value="Holiday">School Holiday</option>
+                  </select>
                 </div>
-                <div className="flex gap-4">
-                  <Button type="submit" className="flex-1 h-14 bg-rose-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest">{editingId ? 'Update Broadcast' : 'Broadcast Announcement'}</Button>
-                  <Button type="button" onClick={() => { setShowAdd(false); setEditingId(null); }} className="h-14 px-8 bg-slate-100 text-slate-400 rounded-xl font-black text-[10px] uppercase tracking-widest">Discard</Button>
-                </div>
-              </form>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Detailed Content</label>
+                <textarea
+                  className="w-full h-40 p-6 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-rose-500 font-medium resize-none"
+                  placeholder="Enter announcement details..."
+                  value={formData.content}
+                  onChange={e => setFormData({ ...formData, content: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="flex gap-4">
+                <Button type="submit" className="flex-1 h-14 bg-rose-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest">{editingId ? 'Update Broadcast' : 'Broadcast Announcement'}</Button>
+                <Button type="button" onClick={() => { setShowAdd(false); setEditingId(null); }} className="h-14 px-8 bg-slate-100 text-slate-400 rounded-xl font-black text-[10px] uppercase tracking-widest">Discard</Button>
+              </div>
+            </form>
+          </Card>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {announcements.map(ann => (

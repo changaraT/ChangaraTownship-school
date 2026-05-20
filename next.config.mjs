@@ -15,7 +15,6 @@ const nextConfig = {
       { source: "/api/messages", destination: "/api/comms" },
       { source: "/api/messages/:path*", destination: "/api/comms/:path*" },
       { source: "/api/stats", destination: "/api/admin" },
-      { source: "/api/health", destination: "/api/admin" },
       { source: "/api/parents", destination: "/api/admin" }
     ];
   }
