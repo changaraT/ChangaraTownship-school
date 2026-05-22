@@ -1,6 +1,7 @@
 
 import { useState, useEffect, createContext, useContext, Fragment, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 import {
   Users,
   GraduationCap,
@@ -88,23 +89,190 @@ const CBC_SUBJECTS = [
 ];
 
 const CLASS_CBC_SUBJECT_KEYS_MAP: Record<string, string[]> = {
-  Playgroup: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  PP1: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  PP2: ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  'Grade 1': ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  'Grade 2': ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  'Grade 3': ['math_marks', 'english_marks', 'kiswahili_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks'],
-  'Grade 4': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 5': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 6': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 7 (JSS)': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 8 (JSS)': CBC_SUBJECTS.map((subject) => subject.key),
-  'Grade 9 (JSS)': CBC_SUBJECTS.map((subject) => subject.key),
+  Playgroup: ['english_marks', 'math_marks', 'creative_arts_marks', 'physical_education_marks', 'social_studies_marks'],
+  PP1: ['english_marks', 'math_marks', 'science_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  PP2: ['english_marks', 'math_marks', 'science_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 1': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'life_skills_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 2': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'life_skills_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 3': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'life_skills_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 4': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 5': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 6': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'Grade 7 (JSS)': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks', 'agriculture_marks'],
+  'Grade 8 (JSS)': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks', 'agriculture_marks'],
+  'Grade 9 (JSS)': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks', 'agriculture_marks'],
+  'Grade 7': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks', 'agriculture_marks'],
+  'Grade 8': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks', 'agriculture_marks'],
+  'Grade 9': ['english_marks', 'kiswahili_marks', 'math_marks', 'science_marks', 'social_studies_marks', 'creative_arts_marks', 'religious_education_marks', 'life_skills_marks', 'physical_education_marks', 'agriculture_marks'],
+  'PP 1': ['english_marks', 'math_marks', 'science_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+  'PP 2': ['english_marks', 'math_marks', 'science_marks', 'creative_arts_marks', 'religious_education_marks', 'physical_education_marks'],
+};
+
+const CLASS_CBC_SUBJECT_LABELS_MAP: Record<string, Record<string, string>> = {
+  Playgroup: {
+    english_marks: 'Language development',
+    math_marks: 'Number & pre-math activities',
+    creative_arts_marks: 'Creative play',
+    physical_education_marks: 'Physical play',
+    social_studies_marks: 'Social skills',
+  },
+  PP1: {
+    english_marks: 'Language Activities',
+    math_marks: 'Mathematical Activities',
+    science_marks: 'Environmental Activities',
+    creative_arts_marks: 'Creative Activities',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Psychomotor & Movement Activities',
+  },
+  PP2: {
+    english_marks: 'Language Activities',
+    math_marks: 'Mathematical Activities',
+    science_marks: 'Environmental Activities',
+    creative_arts_marks: 'Creative Activities',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Psychomotor & Movement Activities',
+  },
+  'Grade 1': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Environmental Activities',
+    life_skills_marks: 'Hygiene & Nutrition',
+    creative_arts_marks: 'Creative Arts',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Physical & Health Education',
+  },
+  'Grade 2': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Environmental Activities',
+    life_skills_marks: 'Hygiene & Nutrition',
+    creative_arts_marks: 'Creative Arts',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Physical & Health Education',
+  },
+  'Grade 3': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Environmental Activities',
+    life_skills_marks: 'Hygiene & Nutrition',
+    creative_arts_marks: 'Creative Arts',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Physical & Health Education',
+  },
+  'Grade 4': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Science & Technology',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Physical & Health Education',
+  },
+  'Grade 5': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Science & Technology',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Physical & Health Education',
+  },
+  'Grade 6': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Science & Technology',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts',
+    religious_education_marks: 'Religious Education',
+    physical_education_marks: 'Physical & Health Education',
+  },
+  'Grade 7 (JSS)': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Integrated Science',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts / Talent Areas',
+    religious_education_marks: 'Religious Education',
+    life_skills_marks: 'Life Skills Education',
+    physical_education_marks: 'Physical & Health Education',
+    agriculture_marks: 'Agriculture',
+  },
+  'Grade 8 (JSS)': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Integrated Science',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts / Talent Areas',
+    religious_education_marks: 'Religious Education',
+    life_skills_marks: 'Life Skills Education',
+    physical_education_marks: 'Physical & Health Education',
+    agriculture_marks: 'Agriculture',
+  },
+  'Grade 9 (JSS)': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Integrated Science',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts / Talent Areas',
+    religious_education_marks: 'Religious Education',
+    life_skills_marks: 'Life Skills Education',
+    physical_education_marks: 'Physical & Health Education',
+    agriculture_marks: 'Agriculture',
+  },
+  'Grade 7': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Integrated Science',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts / Talent Areas',
+    religious_education_marks: 'Religious Education',
+    life_skills_marks: 'Life Skills Education',
+    physical_education_marks: 'Physical & Health Education',
+    agriculture_marks: 'Agriculture',
+  },
+  'Grade 8': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Integrated Science',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts / Talent Areas',
+    religious_education_marks: 'Religious Education',
+    life_skills_marks: 'Life Skills Education',
+    physical_education_marks: 'Physical & Health Education',
+    agriculture_marks: 'Agriculture',
+  },
+  'Grade 9': {
+    english_marks: 'English',
+    kiswahili_marks: 'Kiswahili',
+    math_marks: 'Mathematics',
+    science_marks: 'Integrated Science',
+    social_studies_marks: 'Social Studies',
+    creative_arts_marks: 'Creative Arts / Talent Areas',
+    religious_education_marks: 'Religious Education',
+    life_skills_marks: 'Life Skills Education',
+    physical_education_marks: 'Physical & Health Education',
+    agriculture_marks: 'Agriculture',
+  },
 };
 
 const getExamSubjectsForClass = (className: string) => {
   const keys = CLASS_CBC_SUBJECT_KEYS_MAP[className] || CBC_SUBJECTS.map((subject) => subject.key);
-  return CBC_SUBJECTS.filter((subject) => keys.includes(subject.key));
+  const labels = CLASS_CBC_SUBJECT_LABELS_MAP[className] || {};
+  return CBC_SUBJECTS.filter((subject) => keys.includes(subject.key)).map((subject) => ({
+    key: subject.key,
+    label: labels[subject.key] || subject.label,
+  }));
 };
 
 const getCurrentAcademicTerm = (date = new Date()) => {
@@ -116,24 +284,15 @@ const getCurrentAcademicTerm = (date = new Date()) => {
 
 const getCurrentAcademicYear = (date = new Date()) => date.getFullYear().toString();
 
-const SCHOOL_LOGO_SRC = '/logo.jpg';
-
 const getFormattedToday = (date = new Date()) => date.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-const getMetricLabel = (score: number | null | undefined) => {
-  if (score === null || score === undefined || Number.isNaN(score)) return '';
-  if (score >= 80) return 'EE';
-  if (score >= 65) return 'ME';
-  if (score >= 50) return 'AE';
+const gradeFromMark = (mark: number | null) => {
+  if (mark == null || Number.isNaN(Number(mark))) return 'N/A';
+  const m = Number(mark);
+  if (m >= 80) return 'EE';
+  if (m >= 60) return 'ME';
+  if (m >= 40) return 'AE';
   return 'BE';
-};
-
-const getMetricDescription = (score: number | null | undefined) => {
-  if (score === null || score === undefined || Number.isNaN(score)) return '';
-  if (score >= 80) return 'Exceeding Expectation';
-  if (score >= 65) return 'Meeting Expectation';
-  if (score >= 50) return 'Approaching Expectation';
-  return 'Below Expectation';
 };
 
 /** Utility for Tailwind classes */
@@ -269,7 +428,9 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-14 h-14 rounded-xl object-cover shadow-xl border border-slate-200" />
+            <div className="w-10 h-10 bg-emerald-900 rounded-xl flex items-center justify-center text-white shadow-xl">
+              <School size={22} />
+            </div>
             <div className="hidden sm:block leading-none">
               <span className="font-black text-[13px] uppercase tracking-tighter block">Changara Township</span>
               <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Excellence in every step</span>
@@ -488,30 +649,20 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
               </div>
             </div>
           </div>
-          <div className="mt-20 pt-10 border-t border-slate-50 flex flex-col items-center gap-8">
-            <div className="flex flex-col items-center gap-6">
-              <div className="relative w-20 h-20 overflow-hidden rounded-2xl shadow-xl border-2 border-slate-100">
-                <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-full h-full object-cover" />
-              </div>
-              <div className="text-center space-y-1">
-                <p className="text-lg font-black text-slate-900 tracking-tight">Changara Township School</p>
-                <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Nurturing Excellence • Building Futures</p>
-              </div>
+          <div className="mt-20 pt-10 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex gap-6 order-2 md:order-1">
+              {[
+                { icon: Twitter, label: 'Twitter' },
+                { icon: Facebook, label: 'Facebook' },
+                { icon: Instagram, label: 'Instagram' }
+              ].map(({ icon: Icon, label }) => (
+                <span key={label} className="text-slate-400 hover:text-emerald-600 cursor-pointer transition-colors" title={label}>
+                  <Icon size={18} />
+                </span>
+              ))}
             </div>
-            <div className="flex gap-8 items-center justify-center">
-              <div className="flex gap-6">
-                {[
-                  { icon: Twitter, label: 'Twitter' },
-                  { icon: Facebook, label: 'Facebook' },
-                  { icon: Instagram, label: 'Instagram' }
-                ].map(({ icon: Icon, label }) => (
-                  <span key={label} className="text-slate-400 hover:text-emerald-600 cursor-pointer transition-colors" title={label}>
-                    <Icon size={20} />
-                  </span>
-                ))}
-              </div>
-            </div>
-            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center">© 2026 Changara Township • Built for Digital Excellence</p>
+            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center order-1 md:order-2 flex-grow">© 2026 Changara Township • Built for Digital Excellence</p>
+            <div className="hidden md:block w-[120px] order-3"></div> {/* Spacer to help centering */}
           </div>
         </div>
       </footer>
@@ -598,8 +749,8 @@ const AuthPage = ({ onBack }: { onBack: () => void }) => {
 
       <div className="w-full max-w-[460px] space-y-8 relative z-10">
         <div className="text-center space-y-4">
-          <div className="relative mx-auto w-24 h-24 overflow-hidden rounded-[2rem] shadow-2xl border border-slate-100">
-            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-full h-full object-cover" />
+          <div className="w-20 h-20 bg-slate-900 text-white rounded-[2rem] mx-auto flex items-center justify-center shadow-2xl relative">
+            <School size={36} />
             <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
               <ShieldCheck size={18} />
             </div>
@@ -710,112 +861,183 @@ const AcademicsParentView = ({ data }: { data: any }) => {
     fetchResults();
   }, [term, year, examType]);
 
-  const latestExam = results[0] || null;
-  const position = latestExam?.position ?? null;
-  const previousExam = data.previousExam || (results.length > 1 ? results[1] : null);
-  const academicSubjects = getExamSubjectsForClass(data.student.class);
+  const result = results[0]; // Since it filters by studentId, term, year, examType it should be 1 record with all subjects
 
-  const getInlineLogoDataUrl = async () => {
+  const subjects = getExamSubjectsForClass(data.student.class);
+
+  const buildStudentReportHtml = () => {
+    const subjectRows = subjects.map((sub) => {
+      const rawMarks = result?.[sub.key];
+      const markValue = rawMarks != null ? Number(rawMarks) : null;
+      const grade = markValue != null ? (markValue >= 80 ? 'EE' : markValue >= 60 ? 'ME' : markValue >= 40 ? 'AE' : 'BE') : 'N/A';
+      return `<tr>
+        <td style="padding:8px;border:1px solid #ddd">${sub.label}</td>
+        <td style="padding:8px;border:1px solid #ddd;text-align:center">${markValue != null ? `${markValue}%` : 'N/A'}</td>
+        <td style="padding:8px;border:1px solid #ddd;text-align:center">${grade}</td>
+      </tr>`;
+    }).join('');
+
+    const positionLine = result?.position ? `<p style="margin:0 0 8px 0;font-size:14px;font-weight:700">Class Position: ${result.position}</p>` : '';
+    const remarksLine = result?.remarks ? `<p style="margin:0 0 8px 0;font-size:13px">Remarks: ${result.remarks}</p>` : '';
+
+    return `
+      <html>
+        <head>
+          <title>${data.student.name} - Academic Report</title>
+          <style>
+            body { font-family: Arial, Helvetica, sans-serif; color:#111; margin:24px; }
+            h1, h2, h3, p { margin:0; }
+            .header { margin-bottom:24px; }
+            .header h1 { font-size:28px; margin-bottom:8px; }
+            .logo-row { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+            .logo { width:80px; height:80px; object-fit:contain; }
+            .student-info { margin-top:12px; font-size:14px; line-height:1.6; }
+            .student-info span { display:block; }
+            .details { margin-top:18px; }
+            .report-table { width:100%; border-collapse:collapse; margin-top:16px; }
+            .report-table th, .report-table td { border:1px solid #ddd; padding:10px; }
+            .report-table th { background:#f8fafc; text-align:left; }
+            .footer { margin-top:24px; font-size:13px; color:#4b5563; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo-row">
+              <img src="/icon-512.png" alt="School logo" class="logo" />
+              <h1>Academic Result</h1>
+            </div>
+            <div class="student-info">
+              <span><strong>Learner:</strong> ${data.student.name}</span>
+              <span><strong>Admission No:</strong> ${data.student.admission_number}</span>
+              <span><strong>Class:</strong> ${data.student.class}</span>
+              <span><strong>Assessment:</strong> ${examType} | ${term} ${year}</span>
+            </div>
+          </div>
+          <div class="details">
+            ${positionLine}
+            ${remarksLine}
+          </div>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th style="text-align:center">Mark</th>
+                <th style="text-align:center">Metric</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${subjectRows}
+            </tbody>
+          </table>
+          <div class="footer">This report includes only student details, subject marks, and position for print/pdf use.</div>
+        </body>
+      </html>
+    `;
+  };
+
+  const handlePrintStudentReport = () => {
+    const html = buildStudentReportHtml();
+    const win = window.open('', '_blank', 'noopener');
+    if (!win) return;
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+
+    const printWhenReady = () => {
+      if (win.document.readyState === 'complete') {
+        win.focus();
+        win.print();
+        win.onafterprint = () => win.close();
+      } else {
+        setTimeout(printWhenReady, 100);
+      }
+    };
+
+    printWhenReady();
+  };
+
+  const fetchImageDataUrl = async (imageUrl: string) => {
     try {
-      const response = await fetch(SCHOOL_LOGO_SRC);
+      const response = await fetch(imageUrl);
+      if (!response.ok) return null;
       const blob = await response.blob();
-      return await new Promise<string>((resolve) => {
+      return new Promise<string | null>((resolve) => {
         const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result as string);
+        reader.onloadend = () => resolve(typeof reader.result === 'string' ? reader.result : null);
+        reader.onerror = () => resolve(null);
         reader.readAsDataURL(blob);
       });
     } catch {
-      return SCHOOL_LOGO_SRC;
+      return null;
     }
   };
 
-  const renderParentReportHtml = async (logoSrc: string) => {
-    const subjectRows = academicSubjects.map(sub => {
-      const marks = latestExam?.[sub.key];
-      const metric = getMetricLabel(marks);
-      const description = getMetricDescription(marks);
-      return `
-        <tr>
-          <td>${sub.label}</td>
-          <td>${marks ?? 'N/A'}</td>
-          <td>${metric || '-'}</td>
-          <td>${description || '-'}</td>
-        </tr>`;
-    }).join('');
+  const handleDownloadStudentPdf = async () => {
+    const logo = await fetchImageDataUrl('/icon-512.png');
+    const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
+    const leftPadding = 40;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    let y = 60;
 
-    return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>${data.student.name} - ${examType} Report</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 24px; color: #102a43; }
-    .header { text-align: center; margin-bottom: 24px; }
-    .logo { width: 110px; height: 110px; object-fit: cover; border-radius: 22px; margin: 0 auto 18px; }
-    h1 { margin: 0; font-size: 28px; letter-spacing: -0.04em; }
-    p { margin: 4px 0; }
-    .meta { color: #475569; font-size: 13px; margin-top: 8px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
-    th, td { border: 1px solid #cbd5e1; padding: 12px 14px; text-align: left; }
-    th { background: #f8fafc; font-weight: 800; }
-    tr:nth-child(even) { background: #f8fafc; }
-    .footer { margin-top: 32px; font-size: 12px; color: #64748b; text-align: center; }
-    @media print { body { margin: 0; } .noprint { display: none; } }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <img src="${logoSrc}" alt="Changara School Logo" class="logo" />
-    <h1>Changara Township School</h1>
-    <p class="meta">${examType} • ${term} ${year}</p>
-    <p class="meta">${data.student.name} | Admission: ${data.student.admission_number} | Class: ${data.student.class}</p>
-    ${position ? `<p class="meta">Position: ${position} out of ${totalStudents || 'class'}</p>` : ''}
-  </div>
+    if (logo) {
+      pdf.addImage(logo, 'PNG', leftPadding, y - 20, 60, 60);
+    }
 
-  <table>
-    <thead>
-      <tr>
-        <th>Subject</th>
-        <th>Marks</th>
-        <th>Metric</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${subjectRows}
-    </tbody>
-  </table>
+    pdf.setFontSize(20);
+    pdf.text('Academic Result', logo ? leftPadding + 80 : leftPadding, y);
+    y += 40;
 
-  <div class="footer">
-    Generated on ${new Date().toLocaleDateString()} by Changara Township School
-  </div>
-</body>
-</html>`;
-  };
+    pdf.setFontSize(11);
+    pdf.text(`Learner: ${data.student.name}`, leftPadding, y);
+    y += 18;
+    pdf.text(`Admission No: ${data.student.admission_number}`, leftPadding, y);
+    y += 18;
+    pdf.text(`Class: ${data.student.class}`, leftPadding, y);
+    y += 18;
+    pdf.text(`Assessment: ${examType} | ${term} ${year}`, leftPadding, y);
+    y += 24;
 
-  const handlePrintAcademicReport = async () => {
-    if (!latestExam) return;
-    const logoSrc = await getInlineLogoDataUrl();
-    const html = await renderParentReportHtml(logoSrc);
-    const printWindow = window.open('', '', 'width=1200,height=900');
-    if (!printWindow) return;
-    printWindow.document.write(html + '<script>window.print(); window.close();</script>');
-    printWindow.document.close();
-  };
+    if (result?.position) {
+      pdf.setFontSize(12);
+      pdf.text(`Class Position: ${result.position}`, leftPadding, y);
+      y += 18;
+    }
+    if (result?.remarks) {
+      pdf.setFontSize(11);
+      pdf.text(`Remarks: ${result.remarks}`, leftPadding, y);
+      y += 24;
+    }
 
-  const handleDownloadReport = async () => {
-    if (!latestExam) return;
-    const logoSrc = await getInlineLogoDataUrl();
-    const html = await renderParentReportHtml(logoSrc);
-    const safeFileName = `${data.student.name.replace(/[^a-z0-9]/gi, '_')}_${examType}_${term}_${year}_report.html`;
-    const blob = new Blob([html], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = safeFileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
+    pdf.setLineWidth(0.5);
+    pdf.line(leftPadding, y, pageWidth - leftPadding, y);
+    y += 16;
+    pdf.setFontSize(12);
+    pdf.text('Subject', leftPadding, y);
+    pdf.text('Mark', pageWidth / 2 - 20, y, { align: 'center' });
+    pdf.text('Metric', pageWidth - leftPadding - 20, y, { align: 'right' });
+    y += 10;
+    pdf.line(leftPadding, y, pageWidth - leftPadding, y);
+    y += 18;
+
+    subjects.forEach((sub) => {
+      const rawMarks = result?.[sub.key];
+      const markValue = rawMarks != null ? Number(rawMarks) : null;
+      const metric = markValue != null ? (markValue >= 80 ? 'EE' : markValue >= 60 ? 'ME' : markValue >= 40 ? 'AE' : 'BE') : 'N/A';
+      const markLabel = markValue != null ? `${markValue}%` : 'N/A';
+
+      if (y > pdf.internal.pageSize.getHeight() - 80) {
+        pdf.addPage();
+        y = 60;
+      }
+
+      pdf.setFontSize(11);
+      pdf.text(sub.label, leftPadding, y);
+      pdf.text(markLabel, pageWidth / 2 - 20, y, { align: 'center' });
+      pdf.text(metric, pageWidth - leftPadding - 20, y, { align: 'right' });
+      y += 18;
+    });
+
+    pdf.save(`${data.student.name.replace(/\s+/g, '_')}_${term}_${year}.pdf`);
   };
 
   return (
@@ -865,41 +1087,46 @@ const AcademicsParentView = ({ data }: { data: any }) => {
               <div>
                 <h3 className="text-2xl font-black text-slate-900 tracking-tight">Competency Mastery</h3>
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">{examType} | {term} - {year}</p>
-                {latestExam?.position && (
-                  <p className="text-[12px] font-bold text-indigo-600 mt-1">Position: {latestExam.position} out of {totalStudents || 'class'}</p>
+                {result?.position && (
+                  <p className="text-[12px] font-bold text-indigo-600 mt-1">Position: {result.position} out of {totalStudents || 'class'}</p>
                 )}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {loading ? (
-                <div className="col-span-full py-20 flex justify-center"><Loader2 className="animate-spin text-indigo-600" /></div>
-              ) : !latestExam ? (
-                <div className="col-span-full py-20 text-center opacity-30 flex flex-col items-center gap-4">
+                <div className="col-span-3 py-20 flex justify-center"><Loader2 className="animate-spin text-indigo-600" /></div>
+              ) : !result ? (
+                <div className="col-span-3 py-20 text-center opacity-30 flex flex-col items-center gap-4">
                   <Target size={40} />
                   <p className="font-bold italic">Academic records for this assessment cycle have not been ratified by the class teacher.</p>
                 </div>
               ) : (
-                academicSubjects.map((sub) => {
-                  const marks = latestExam[sub.key];
-                  const label = marks >= 80 ? 'EE' : marks >= 65 ? 'ME' : marks >= 50 ? 'AE' : 'BE';
-                  const detailedLabel = marks >= 80 ? 'Exceeding Expectation' : marks >= 65 ? 'Meeting Expectation' : marks >= 50 ? 'Approaching Expectation' : 'Below Expectation';
-                  const colorClass = marks >= 80 ? 'text-emerald-600 bg-emerald-50 border-emerald-100' : marks >= 65 ? 'text-indigo-600 bg-indigo-50 border-indigo-100' : marks >= 50 ? 'text-amber-600 bg-amber-50 border-amber-100' : 'text-rose-600 bg-rose-50 border-rose-100';
+                subjects.map((sub) => {
+                  const rawMarks = result[sub.key];
+                  const markValue = rawMarks != null ? Number(rawMarks) : null;
+                  const badgeLabel = markValue != null ? (markValue >= 80 ? 'EE' : markValue >= 60 ? 'ME' : markValue >= 40 ? 'AE' : 'BE') : 'N/A';
+                  const detailedLabel = markValue != null ? (markValue >= 80 ? 'Exceeding Expectation' : markValue >= 60 ? 'Meeting Expectation' : markValue >= 40 ? 'Approaching Expectation' : 'Below Expectation') : 'Result Pending';
+                  const colorClass = markValue == null
+                    ? 'text-slate-500 bg-slate-100 border-slate-200'
+                    : markValue >= 80 ? 'text-emerald-600 bg-emerald-50 border-emerald-100'
+                      : markValue >= 60 ? 'text-indigo-600 bg-indigo-50 border-indigo-100'
+                        : markValue >= 40 ? 'text-amber-600 bg-amber-50 border-amber-100'
+                          : 'text-rose-600 bg-rose-50 border-rose-100';
 
                   return (
-                    <div key={sub.key} className="flex flex-col justify-between p-5 bg-slate-50 rounded-[2rem] border border-slate-100 hover:bg-white hover:shadow-lg transition-all group relative overflow-hidden min-h-[170px]">
-                      <div className="relative z-10">
-                        <p className="font-black text-slate-800 text-base leading-tight tracking-tight mb-2">{sub.label}</p>
-                        <div className={cn("inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-[0.2em]", colorClass)}>
-                          <div className={cn("w-2 h-2 rounded-full", marks >= 80 ? "bg-emerald-500" : marks >= 65 ? "bg-indigo-500" : marks >= 50 ? "bg-amber-500" : "bg-rose-500")}></div>
+                    <div key={sub.key} className="p-5 bg-slate-50 rounded-[2rem] border border-slate-100 hover:bg-white hover:shadow-xl transition-all group relative overflow-hidden">
+                      <div className="relative z-10 space-y-3">
+                        <p className="font-black text-slate-800 text-lg leading-tight tracking-tight">{sub.label}</p>
+                        <div className={cn("inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest", colorClass)}>
+                          <div className={cn("w-2 h-2 rounded-full", markValue == null ? 'bg-slate-400' : markValue >= 80 ? 'bg-emerald-500' : markValue >= 60 ? 'bg-indigo-500' : markValue >= 40 ? 'bg-amber-500' : 'bg-rose-500')}></div>
                           {detailedLabel}
                         </div>
                       </div>
-                      <div className="relative z-10 text-right mt-6">
-                        <p className="text-4xl font-black text-slate-900 tracking-tighter leading-none">{marks ?? 'N/A'}</p>
-                        <p className="text-[10px] font-bold text-slate-400 mt-2 italic">CBC Matrix</p>
+                      <div className="relative z-10 text-right mt-4">
+                        <p className="text-3xl font-black text-slate-900 tracking-tighter leading-none">{markValue != null ? `${markValue}%` : 'N/A'}</p>
+                        <p className="text-[10px] font-bold text-slate-400 mt-1 italic">{badgeLabel}</p>
                       </div>
-                      <div className="absolute top-0 right-0 w-20 h-20 bg-slate-100/50 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-indigo-50/50 transition-colors"></div>
                     </div>
                   );
                 })
@@ -907,7 +1134,7 @@ const AcademicsParentView = ({ data }: { data: any }) => {
             </div>
           </Card>
 
-          {latestExam && (
+          {result && (
             <div className="bg-amber-50 p-8 rounded-[2.5rem] border border-amber-100 flex items-start gap-6">
               <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-amber-500 shadow-sm flex-shrink-0">
                 <ShieldAlert size={24} />
@@ -934,9 +1161,9 @@ const AcademicsParentView = ({ data }: { data: any }) => {
                 </div>
               </div>
               <div className="p-10 bg-white/5 rounded-[2.5rem] border border-white/10 italic text-lg leading-relaxed text-slate-300 font-medium font-serif min-h-[200px] flex items-center">
-                {latestExam?.remarks ? `"${latestExam.remarks}"` : `"The instructional board's qualitative assessment for this period is still undergoing validation."`}
+                {result?.remarks ? `"${result.remarks}"` : `"The instructional board's qualitative assessment for this period is still undergoing validation."`}
               </div>
-              <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="pt-8 border-t border-white/10 flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-black">CT</div>
                   <div>
@@ -945,11 +1172,11 @@ const AcademicsParentView = ({ data }: { data: any }) => {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <Button onClick={handleDownloadReport} className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-100 shadow-lg">
-                    <Download size={14} /> Download Report
+                  <Button onClick={handlePrintStudentReport} className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-100 shadow-lg">
+                    <Printer size={14} /> Official Report card
                   </Button>
-                  <Button onClick={handlePrintAcademicReport} className="bg-indigo-500 text-white px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-indigo-400 shadow-lg">
-                    <Printer size={14} /> Print Report
+                  <Button onClick={handleDownloadStudentPdf} className="bg-slate-100 text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-200 shadow-lg">
+                    <Download size={14} /> Download PDF
                   </Button>
                 </div>
               </div>
@@ -977,6 +1204,20 @@ const AcademicsParentView = ({ data }: { data: any }) => {
 
 // --- Parent Dashboard View ---
 const ParentDashboardView = ({ data }: { data: any }) => {
+  const currentTerm = getCurrentAcademicTerm();
+  const currentYear = Number(getCurrentAcademicYear());
+  const termOrder = ['Term 1', 'Term 2', 'Term 3'];
+  const selectedTerms = termOrder.slice(0, termOrder.indexOf(currentTerm) + 1);
+
+  const relevantFeeStructure = (data.feeStructure || []).filter((s: any) =>
+    s.class === data.student.class && Number(s.year) === currentYear && selectedTerms.includes(s.term)
+  );
+  const expectedFees = relevantFeeStructure.reduce((sum: number, fee: any) => sum + Number(fee.amount || 0), 0);
+  const paidFees = (data.fees || []).filter((f: any) =>
+    selectedTerms.includes(f.term) && Number(f.year) === currentYear && String(f.status).toLowerCase() === 'paid'
+  ).reduce((sum: number, fee: any) => sum + Number(fee.amount || 0), 0);
+  const totalBalance = Math.max(0, expectedFees - paidFees);
+
   return (
     <div className="space-y-10">
       <div className="p-16 bg-white rounded-[4rem] border border-slate-100 shadow-2xl relative overflow-hidden group">
@@ -998,6 +1239,9 @@ const ParentDashboardView = ({ data }: { data: any }) => {
               <span className="px-6 py-2 bg-indigo-50 text-indigo-600 rounded-full text-[12px] font-black uppercase tracking-widest border border-indigo-100">
                 Adm: {data.student.admission_number}
               </span>
+              <span className="px-6 py-2 bg-emerald-50 text-emerald-700 rounded-full text-[12px] font-black uppercase tracking-widest border border-emerald-100">
+                Current term: {currentTerm} {currentYear}
+              </span>
             </div>
           </div>
         </div>
@@ -1008,18 +1252,10 @@ const ParentDashboardView = ({ data }: { data: any }) => {
           <div className="absolute top-0 right-0 p-8 transform translate-x-4 -translate-y-4 opacity-10 group-hover:scale-110 transition-transform">
             <Wallet size={80} />
           </div>
-          <p className="text-[11px] font-black uppercase tracking-[0.2em] opacity-60 mb-6">Current Balance</p>
-          <p className="text-4xl font-black">
-            KSH {(data.fees.reduce((s: number, f: any) => s + f.amount, 0) - data.fees.filter((f: any) => f.status === 'Paid').reduce((s: number, f: any) => s + f.amount, 0)).toLocaleString()}
-          </p>
-          <p className="text-[10px] font-bold mt-4 italic opacity-70 tracking-tight">Financial standing for current term</p>
-        </Card>
-
-        <Card className="p-10 bg-white border-slate-100 rounded-[3rem] shadow-xl hover:shadow-2xl transition-all group">
-          <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Academic Ranking</p>
-          <p className="text-4xl font-black text-slate-800">
-            {data.exams.length > 0 && data.exams[0]?.position ? data.exams[0].position : (data.exams.length > 0 ? `${Math.round(data.exams.reduce((s: number, e: any) => s + e.marks, 0) / data.exams.length)}%` : 'N/A')}
-          </p>
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] opacity-60 mb-6">Outstanding Balance</p>
+          <p className="text-4xl font-black">KSH {totalBalance.toLocaleString()}</p>
+          <p className="text-[10px] font-bold mt-4 italic opacity-70 tracking-tight">Total due through {currentTerm}</p>
+          <p className="text-6xl font-black text-white mt-8">{data.exams.length > 0 && data.exams[0]?.position ? data.exams[0].position : (data.exams.length > 0 ? `${Math.round(data.exams.reduce((s: number, e: any) => s + e.marks, 0) / data.exams.length)}%` : 'N/A')}</p>
           <p className="text-[10px] font-bold mt-4 text-slate-400 tracking-tight">{data.exams.length > 0 && data.exams[0]?.position ? 'Class Position' : 'Average performance score'}</p>
         </Card>
 
@@ -1083,8 +1319,8 @@ const ParentDashboardView = ({ data }: { data: any }) => {
 
 // --- Parent Fees View ---
 const ParentFeesView = ({ data }: { data: any }) => {
-  const [selectedYear, setSelectedYear] = useState('2026');
-  const [selectedTerm, setSelectedTerm] = useState('Term 1');
+  const [selectedYear, setSelectedYear] = useState(getCurrentAcademicYear());
+  const [selectedTerm, setSelectedTerm] = useState(getCurrentAcademicTerm());
 
   const currentStructure = data.feeStructure?.find((s: any) => s.term === selectedTerm && s.year?.toString() === selectedYear);
   const relevantFees = data.fees.filter((f: any) => f.term === selectedTerm && f.year?.toString() === selectedYear);
@@ -1219,7 +1455,6 @@ const ParentFeesView = ({ data }: { data: any }) => {
                             <body onload="window.print()">
                               <div class="receipt">
                                  <div class="header">
-                                    <img src="/logo.jpg" alt="Changara Logo" style="width: 96px; height: 96px; object-fit: cover; border-radius: 22px; margin-bottom: 18px;" />
                                     <h1>CHANGARA TOWNSHIP</h1>
                                     <p>Statutory Payment Voucher</p>
                                  </div>
@@ -1262,13 +1497,35 @@ const ParentFeesView = ({ data }: { data: any }) => {
 const StudentDashboard = ({ data, onBack }: { data: any, onBack: () => void }) => {
   const [activeTab, setActiveTab] = useState<'fees' | 'academics' | 'notices'>('fees');
 
-  const totalFees = data.fees.reduce((sum: number, fee: any) => sum + Number(fee.amount), 0);
-  const paidFees = data.fees.filter((f: any) => f.status === 'paid').reduce((sum: number, fee: any) => sum + Number(fee.amount), 0);
-  const balance = totalFees - paidFees;
-  const academicSubjects = getExamSubjectsForClass(data.student.class);
-  const latestExam = Array.isArray(data.exams) ? data.exams[0] : data.exams;
-  const previousExam = data.previousExam || (Array.isArray(data.exams) && data.exams.length > 1 ? data.exams[1] : null);
-  const position = latestExam?.position || data.position || data.student.position || null;
+  const [currentTerm, setCurrentTerm] = useState<string>('Term 1');
+  const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
+  const [expectedAmount, setExpectedAmount] = useState<number | null>(null);
+  const [paidAmount, setPaidAmount] = useState<number>(0);
+  const [termBalance, setTermBalance] = useState<number>(0);
+
+  useEffect(() => {
+    const t = getCurrentAcademicTerm();
+    const yearNum = Number(getCurrentAcademicYear());
+    setCurrentTerm(t);
+    setCurrentYear(yearNum);
+
+    const termOrder = ['Term 1', 'Term 2', 'Term 3'];
+    const selectedTerms = termOrder.slice(0, termOrder.indexOf(t) + 1);
+    const feesForSelectedTerms = (data.fees || []).filter((f: any) => selectedTerms.includes(f.term) && Number(f.year) === yearNum);
+    const paid = feesForSelectedTerms.filter((f: any) => String(f.status).toLowerCase() === 'paid').reduce((s: number, f: any) => s + Number(f.amount || 0), 0);
+
+    const expected = (data.feeStructure || []).filter((s: any) =>
+      s.class === data.student.class && Number(s.year) === yearNum && selectedTerms.includes(s.term)
+    ).reduce((sum: number, fee: any) => sum + Number(fee.amount || 0), 0);
+
+    const fallbackExpected = feesForSelectedTerms.reduce((s: number, fee: any) => s + Number(fee.amount || 0), 0);
+    const totalExpected = expected || fallbackExpected;
+    const balance = Math.max(0, totalExpected - paid);
+
+    setPaidAmount(paid);
+    setExpectedAmount(totalExpected);
+    setTermBalance(balance);
+  }, [data.fees, data.student.class]);
 
   return (
     <motion.div
@@ -1289,6 +1546,11 @@ const StudentDashboard = ({ data, onBack }: { data: any, onBack: () => void }) =
             </div>
             <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] flex items-center gap-3 justify-center md:justify-start">
               <School size={14} className="text-indigo-400" /> Grade: {data.student.class} <span className="opacity-30">|</span> Adm: {data.student.admission_number}
+            </p>
+            <p className="text-[11px] text-slate-400 mt-2 flex items-center gap-3 justify-center md:justify-start">
+              <strong className="font-black">{currentTerm} {currentYear}</strong>
+              <span className="opacity-30">|</span>
+              <span>Balance: KSH {(termBalance || 0).toLocaleString()}</span>
             </p>
           </div>
         </div>
@@ -1319,13 +1581,13 @@ const StudentDashboard = ({ data, onBack }: { data: any, onBack: () => void }) =
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Parental Fee Obligation</p>
             <div className="space-y-1">
-              <p className="text-5xl font-black tracking-tighter">KSH {balance.toLocaleString()}</p>
-              <p className="text-[10px] font-bold opacity-70 italic">Outstanding Balance for Current Session</p>
+              <p className="text-5xl font-black tracking-tighter">KSH {(termBalance || 0).toLocaleString()}</p>
+              <p className="text-[10px] font-bold opacity-70 italic">Outstanding Balance for {currentTerm} {currentYear}</p>
             </div>
             <div className="pt-4 border-t border-white/10 flex items-center gap-4">
               <div className="flex-1">
                 <p className="text-[9px] uppercase font-black opacity-50 mb-1">Total Paid</p>
-                <p className="font-mono font-black">KSH {paidFees.toLocaleString()}</p>
+                <p className="font-mono font-black">KSH {paidAmount.toLocaleString()}</p>
               </div>
               <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                 <Wallet size={18} />
@@ -1369,95 +1631,113 @@ const StudentDashboard = ({ data, onBack }: { data: any, onBack: () => void }) =
       )}
 
       {activeTab === 'academics' && (
-        <div className="space-y-10">
-          <Card className="p-10 bg-white border border-slate-100 shadow-2xl rounded-[3.5rem]">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-              <div>
-                <h3 className="text-3xl font-black text-slate-900 tracking-tight">Academic Performance</h3>
-                <p className="text-sm text-slate-500 italic">Full subject breakdown, metrics and position for this assessment cycle.</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 text-left">
+          <Card className="p-10 space-y-10 bg-white border border-slate-100 shadow-2xl rounded-[3.5rem] relative overflow-hidden">
+            <div className="flex items-center gap-4 border-b border-slate-50 pb-8">
+              <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-inner">
+                <GraduationCap size={24} />
               </div>
               <div>
-                {position ? (
-                  <span className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-indigo-50 text-indigo-700 font-black uppercase text-[10px] tracking-widest">
-                    <Trophy size={16} /> Position {position} in {data.student.class}
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-slate-100 text-slate-500 font-black uppercase text-[10px] tracking-widest">
-                    <span className="font-black">Position pending</span>
-                  </span>
-                )}
+                <h3 className="text-2xl font-black text-slate-900 tracking-tight">Competency Mastery</h3>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Validated Assessment Outcomes</p>
               </div>
             </div>
+            <div className="space-y-6 max-h-[600px] overflow-auto pr-4 subtle-scrollbar">
+              {data.exams.length === 0 ? (
+                <p className="text-slate-400 text-center py-20 italic font-medium">Academic assessment registry empty.</p>
+              ) : (
+                (() => {
+                  const subjectsForClass = getExamSubjectsForClass(data.student.class);
+                  const exams = data.exams || [];
+                  const normalizedSubjects = subjectsForClass.map((s: any) => ({
+                    ...s,
+                    normalizedLabel: s.label.toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+                  }));
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-              {academicSubjects.map((subject) => {
-                const score = latestExam?.[subject.key];
-                const metric = getMetricLabel(score);
-                const description = getMetricDescription(score);
+                  const subjectKeysWithMarks = new Set<string>();
+                  exams.forEach((row: any) => {
+                    if (!row) return;
+                    normalizedSubjects.forEach((subject) => {
+                      if (row[subject.key] != null) {
+                        subjectKeysWithMarks.add(subject.key);
+                      }
+                      if (row.subject && typeof row.subject === 'string') {
+                        const subjectName = row.subject.toLowerCase();
+                        const matchesLabel = subject.normalizedLabel.split(' ').some(token => token && subjectName.includes(token));
+                        if (matchesLabel) {
+                          subjectKeysWithMarks.add(subject.key);
+                        }
+                      }
+                    });
+                  });
 
-                return (
-                  <div key={subject.key} className="flex flex-col justify-between p-5 bg-slate-50 rounded-[2rem] border border-slate-100 min-h-[170px]">
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.35em] text-slate-500">{subject.label}</p>
-                      <p className="text-4xl font-black text-slate-900 mt-4">{score ?? 'N/A'}</p>
+                  const subjectRows = normalizedSubjects.map((s: any) => {
+                    let mark: number | null = null;
+                    if (exams.length === 1 && !exams[0].subject) {
+                      const row = exams[0];
+                      mark = row[s.key] != null ? Number(row[s.key]) : null;
+                    } else {
+                      const found = exams.find((e: any) => {
+                        if (!e) return false;
+                        if (e[s.key] != null) return true;
+                        if (e.subject && typeof e.subject === 'string') {
+                          const subjectName = e.subject.toLowerCase();
+                          return s.normalizedLabel.split(' ').some(token => token && subjectName.includes(token));
+                        }
+                        return false;
+                      });
+                      if (found) {
+                        mark = found.marks != null ? Number(found.marks) : (found[s.key] != null ? Number(found[s.key]) : null);
+                      }
+                    }
+                    return { key: s.key, label: s.label, mark, metric: gradeFromMark(mark) };
+                  });
+
+                  return subjectRows.map((r: any) => (
+                    <div key={r.key} className="flex justify-between items-center p-6 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-white hover:shadow-xl transition-all group">
+                      <div className="space-y-1">
+                        <p className="font-black text-slate-800 tracking-tight text-lg leading-none truncate max-w-[200px]">{r.label}</p>
+                        <p className="text-[10px] font-bold text-slate-400 italic">{currentTerm} | {currentYear}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-4xl font-black text-slate-900 tracking-tighter leading-none group-hover:scale-110 transition-transform origin-right">{r.mark != null ? `${r.mark}%` : 'N/A'}</p>
+                        <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-2">{r.metric}</p>
+                      </div>
                     </div>
-                    {metric ? (
-                      <div className="mt-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white border border-slate-200 text-[10px] font-black uppercase tracking-[0.18em] text-slate-700">
-                        {metric} · {description}
-                      </div>
-                    ) : (
-                      <p className="text-[10px] text-slate-400 mt-5">Score not recorded.</p>
-                    )}
-                  </div>
-                );
-              })}
+                  ));
+                })()
+              )}
             </div>
+          </Card>
 
-            {previousExam && (
-              <div className="mt-10 p-8 bg-indigo-900 text-white rounded-[2.5rem] border border-indigo-700">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <h4 className="text-2xl font-black tracking-tight">Previous Exam Comparison</h4>
-                    <p className="text-sm text-indigo-200 italic">Subject-level progress comparison against the prior assessment.</p>
-                  </div>
-                  <span className="px-4 py-2 bg-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.25em]">
-                    Previous exam available
-                  </span>
+          <Card className="p-10 bg-slate-900 text-white rounded-[3.5rem] shadow-2xl relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+            <div className="space-y-8 relative z-10">
+              <div className="flex items-center gap-4 border-b border-white/10 pb-8">
+                <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white">
+                  <MessageSquare size={24} />
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                  {academicSubjects.map((subject) => {
-                    const currentValue = latestExam?.[subject.key];
-                    const previousValue = previousExam?.[subject.key];
-                    const delta = typeof currentValue === 'number' && typeof previousValue === 'number' ? currentValue - previousValue : null;
-
-                    return (
-                      <div key={subject.key} className="p-6 bg-white/10 rounded-[2rem] border border-white/10">
-                        <p className="text-xs font-black uppercase tracking-[0.3em] text-indigo-200">{subject.label}</p>
-                        <div className="mt-4 flex items-center justify-between gap-4">
-                          <div>
-                            <p className="text-2xl font-black">{currentValue ?? '--'}</p>
-                            <p className="text-[10px] uppercase tracking-[0.2em] text-indigo-200">Now</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-2xl font-black">{previousValue ?? '--'}</p>
-                            <p className="text-[10px] uppercase tracking-[0.2em] text-indigo-200">Before</p>
-                          </div>
-                        </div>
-                        {delta !== null && (
-                          <p className={cn(
-                            'mt-4 text-sm font-black uppercase tracking-[0.2em]',
-                            delta >= 0 ? 'text-emerald-300' : 'text-rose-300'
-                          )}>
-                            {delta >= 0 ? `↑ +${delta}` : `↓ ${Math.abs(delta)}`} change
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
+                <div>
+                  <h3 className="text-2xl font-black text-white tracking-tight">Lead Teacher Evaluative Remarks</h3>
+                  <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest italic">Professional Qualitative Assessment</p>
                 </div>
               </div>
-            )}
+              <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 italic text-lg leading-relaxed text-slate-300 font-medium font-serif min-h-[200px] flex items-center">
+                "{data.student.name.split(' ')[0]} continues to demonstrate exceptional competency in creative areas. Social integration is excellent. Steady progress observed in all learning areas."
+              </div>
+              <div className="flex justify-between items-center pt-8 border-t border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center font-black text-white text-xs">TR</div>
+                  <div>
+                    <p className="text-[11px] font-black leading-none">Class Facilitator</p>
+                    <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Digital Auth Signature</p>
+                  </div>
+                </div>
+                <Button className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2">
+                  <Printer size={14} /> Official Report card
+                </Button>
+              </div>
+            </div>
           </Card>
         </div>
       )}
@@ -1603,7 +1883,7 @@ const DashboardShell = () => {
       )}>
         <div className="flex items-center justify-between lg:justify-start gap-4 px-2">
           <div className="flex items-center gap-4">
-            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-16 h-16 rounded-2xl object-cover shadow-lg" />
+            <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg rotate-3">CT</div>
             <div>
               <span className="text-white font-black text-lg tracking-tight block leading-tight">Changara</span>
               <span className="text-[9px] font-black text-indigo-400 uppercase tracking-[0.25em]">Township</span>
@@ -2398,13 +2678,10 @@ const FeeStructureManagement = () => {
       )}
 
       <div className="bg-white rounded-[3.5rem] border border-slate-100 shadow-2xl overflow-hidden print:shadow-none print:border-none">
-        <div className="p-12 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center bg-slate-50/20 gap-6">
-          <div className="flex items-center gap-4">
-            <img src={SCHOOL_LOGO_SRC} alt="Changara School Logo" className="w-20 h-20 rounded-2xl object-cover shadow-sm" />
-            <div className="space-y-2">
-              <h3 className="text-2xl font-black text-slate-900 tracking-tight">Institutional Billing Matrix</h3>
-              <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] italic">Authorized 2026 Academic Cycle Rates</p>
-            </div>
+        <div className="p-12 border-b border-slate-50 flex justify-between items-center bg-slate-50/20">
+          <div className="space-y-2">
+            <h3 className="text-2xl font-black text-slate-900 tracking-tight">Institutional Billing Matrix</h3>
+            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] italic">Authorized 2026 Academic Cycle Rates</p>
           </div>
           <div className="hidden print:block text-right">
             <p className="font-black text-xs">Changara Township</p>
@@ -3530,10 +3807,9 @@ const ExamsManagement = ({ role }: { role: string }) => {
       body: JSON.stringify({ results: payload })
     });
     if (res.ok) {
-      setMessage('Results published. Computing positions...');
+      // After saving, compute positions
       await computeAndUpdatePositions();
-      setMessage('✓ Results published with positions computed.');
-      await new Promise(r => setTimeout(r, 2000));
+      setMessage('Results published with positions computed.');
       await fetchExistingResults();
     } else {
       const errData = await res.json().catch(() => ({}));
@@ -3615,61 +3891,53 @@ const ExamsManagement = ({ role }: { role: string }) => {
   };
 
   const handlePrintResults = () => {
-    const printWindow = window.open('', '', 'width=1200,height=800');
-    if (!printWindow) return;
-    const printContent = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>${selectedClass} - ${term} - ${examType}</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .header { text-align: center; margin-bottom: 24px; }
-    .logo { width: 100px; height: 100px; object-fit: cover; border-radius: 24px; margin: 0 auto 20px; }
-    h1 { font-size: 22px; margin: 0 0 10px; }
-    p.subtitle { margin: 0; color: #555; font-size: 14px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
-    th, td { border: 1px solid #333; padding: 10px; text-align: center; }
-    th { background-color: #f4f5f7; font-weight: bold; }
-    tr:nth-child(even) { background-color: #fafafb; }
-    .learner-col { text-align: left; }
-    @media print { body { margin: 0; } }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <img src="${SCHOOL_LOGO_SRC}" alt="School Logo" class="logo" />
-    <h1>${selectedClass} - ${term} ${year}</h1>
-    <p class="subtitle">${examType} Results | Changara Township School</p>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th class="learner-col">Learner</th>
-        ${currentAcademicSubjects.map(s => `<th>${s.label}</th>`).join('')}
-        <th>Position</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${filteredStudents.map(student => {
-      const row = results.find(r => r.student_id === student.id) || {};
-      return `<tr>
-          <td class="learner-col"><strong>${student.name}</strong> (${student.admission_number})</td>
-          ${currentAcademicSubjects.map(subject => `<td>${row[subject.key] ?? '-'}</td>`).join('')}
-          <td><strong>${row.position ?? '-'}</strong></td>
-        </tr>`;
-    }).join('')}
-    </tbody>
-  </table>
-  <p style="margin-top: 30px; font-size: 12px; text-align: center; color: #666;">
-    Generated on ${new Date().toLocaleDateString()} | Changara Township School
-  </p>
-  <script>window.print(); window.close();</script>
-</body>
-</html>
+    // Build printable HTML for the results table including logo at top
+    const headers = ['Admission Number', 'Learner', 'Class', 'Term', 'Assessment', ...currentAcademicSubjects.map(s => s.label), 'Position', 'Remarks'];
+    const rows = filteredStudents.map(student => {
+      const row = localEdits[student.id] || results.find(r => r.student_id === student.id) || {};
+      return [
+        student.admission_number,
+        student.name,
+        selectedClass,
+        term,
+        examType,
+        ...currentAcademicSubjects.map(subject => row[subject.key] ?? ''),
+        row.position ?? '',
+        row.remarks || ''
+      ];
+    });
+
+    const tableRows = [headers, ...rows].map(r => `<tr>${r.map(c => `<td style="padding:8px;border:1px solid #ddd">${String(c)}</td>`).join('')}</tr>`).join('');
+
+    const html = `
+      <html>
+        <head>
+          <title>Class Report</title>
+          <style>
+            body { font-family: Arial, Helvetica, sans-serif; padding: 20px; }
+            .logo { display:flex; align-items:center; gap:16px; margin-bottom:16px }
+            .logo img { height:72px }
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid #e5e7eb; padding: 8px; text-align:left }
+            th { background: #f8fafc; font-weight:700 }
+          </style>
+        </head>
+        <body>
+          <div class="logo"><img src="/logo.jpg" alt="logo"/> <div><h2>Changara Township</h2><div>${selectedClass} — ${term} ${year} — ${examType}</div></div></div>
+          <table>
+            <thead><tr>${headers.map(h => `<th style="padding:8px;border:1px solid #ddd">${h}</th>`).join('')}</tr></thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </body>
+      </html>
     `;
-    printWindow.document.write(printContent);
-    printWindow.document.close();
+
+    const win = window.open('', '_blank', 'noopener');
+    if (win) {
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+    }
   };
 
   const handlePromoteClass = async () => {

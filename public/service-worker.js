@@ -1,5 +1,5 @@
 const CACHE_NAME = 'changara-pwa-v1';
-const urlsToCache = ['/', '/manifest.json', '/icon-192.png', '/icon-512.png'];
+const urlsToCache = ['/', '/manifest.json', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

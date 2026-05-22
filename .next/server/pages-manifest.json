@@ -2,5 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/[[...path]]": "pages/[[...path]].js"
+  "/api/academic/[...slug]": "pages/api/academic/[...slug].js",
+  "/[[...path]]": "pages/[[...path]].js",
+  "/api/students": "pages/api/students.js"
 }

@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#0f172a" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <link rel="apple-touch-icon" href="/icon-512.png" />
       </Head>
       <Component {...pageProps} />
     </>

@@ -32,14 +32,23 @@ export default async function handler(req: AuthenticatedRequest, res: VercelResp
           return res.json(data);
         }
         if (id === 'update-positions') {
-          const updates = Array.isArray(req.body?.updates) ? req.body.updates : [];
-          for (const update of updates) {
-            if (update.id) {
-              const { error } = await supabase.from("exam_results").update({ position: update.position }).eq("id", update.id);
-              if (error) throw error;
+          // Expects body: { updates: [{ id: <exam_result_id>, position: <number> }, ...] }
+          if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+          if (user.role !== 'headteacher') return res.status(403).json({ error: 'Forbidden' });
+          const updates = req.body?.updates || [];
+          try {
+            // perform updates in batches
+            const chunkSize = 200;
+            for (let i = 0; i < updates.length; i += chunkSize) {
+              const chunk = updates.slice(i, i + chunkSize);
+              // Using Postgres upsert via id
+              const payload = chunk.map((u: any) => ({ id: u.id, position: u.position, updated_at: new Date().toISOString() }));
+              await supabase.from('exam_results').upsert(payload, { onConflict: 'id' });
             }
+            return res.json({ message: 'Positions updated' });
+          } catch (e: any) {
+            return res.status(500).json({ error: e.message || String(e) });
           }
-          return res.json({ message: "Positions updated" });
         }
         const { data, error } = await supabase.from("exam_results").upsert(req.body).select();
         if (error) throw error;
