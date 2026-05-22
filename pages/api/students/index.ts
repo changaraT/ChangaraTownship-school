@@ -1,8 +1,8 @@
-import { VercelResponse } from "@vercel/node";
+import type { NextApiResponse } from 'next';
 import { supabase, getSupabaseAdmin } from "../../../lib/server/supabase";
 import { authenticate, AuthenticatedRequest } from "../../../lib/server/auth";
 
-export default async function handler(req: AuthenticatedRequest, res: VercelResponse) {
+export default async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     try {
         const user = authenticate(req, res);
 

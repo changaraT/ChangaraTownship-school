@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from "./supabase";
 import { randomBytes, scryptSync, timingSafeEqual } from 'crypto';
 
 export const JWT_SECRET = process.env.JWT_SECRET || "changara-secret-key-123";
 
-export interface AuthenticatedRequest extends VercelRequest {
+export interface AuthenticatedRequest extends NextApiRequest {
   user?: {
     id: string;
     email: string;
@@ -13,7 +13,7 @@ export interface AuthenticatedRequest extends VercelRequest {
   };
 }
 
-export const authenticate = (req: AuthenticatedRequest, _res: VercelResponse) => {
+export const authenticate = (req: AuthenticatedRequest, _res?: NextApiResponse) => {
   // Try to get token from cookies
   let token = req.cookies?.token;
 

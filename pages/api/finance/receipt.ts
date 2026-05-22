@@ -1,7 +1,7 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from "../../../lib/server/supabase";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const id = (req.query.id || req.query['id']) as string;
     if (!id) return res.status(400).send('Missing receipt id');

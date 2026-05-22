@@ -1,8 +1,8 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from "../../../lib/server/supabase";
 import { authenticate } from "../../../lib/server/auth";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { slug } = req.query;
   const path = Array.isArray(slug) ? slug[0] : (req.url?.split('?')[0].split('/').filter(Boolean).pop());
 

@@ -1,7 +1,7 @@
 import { authenticate, getFullUserProfile } from "../../../lib/server/auth";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         // Authenticate user
         const user = authenticate(req, res);

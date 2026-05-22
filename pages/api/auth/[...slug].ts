@@ -1,10 +1,10 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import jwt from "jsonwebtoken";
 import { serialize, SerializeOptions } from "cookie";
 import { supabase } from "../../../lib/server/supabase";
 import { getFullUserProfile, JWT_SECRET } from "../../../lib/server/auth";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { slug } = req.query;
   const action = Array.isArray(slug) ? slug[0] : slug;
   const isProd = process.env.NODE_ENV === "production";

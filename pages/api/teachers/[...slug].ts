@@ -1,10 +1,10 @@
-import { VercelResponse } from "@vercel/node";
+import type { NextApiResponse } from 'next';
 import { supabase, getSupabaseAdmin } from "../../../lib/server/supabase";
 import { authenticate, AuthenticatedRequest } from "../../../lib/server/auth";
 import { sendEmail } from "../../../lib/server/mail";
 import { randomUUID } from 'crypto';
 
-export default async function handler(req: AuthenticatedRequest, res: VercelResponse) {
+export default async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   const { slug } = req.query;
   const action = Array.isArray(slug) ? slug[0] : slug;
 

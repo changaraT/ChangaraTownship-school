@@ -1,7 +1,7 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from "../../../lib/server/supabase";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { slug } = req.query;
   const action = Array.isArray(slug) ? slug[0] : slug;
 
@@ -24,9 +24,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const { data: student } = await supabase.from("students").select("*").eq("admission_number", admission_number).single();
       if (!student) return res.status(404).json({ error: "Not found" });
       const [fees, exams, ann] = await Promise.all([
-          supabase.from("fees").select("*").eq("student_id", student.id),
-          supabase.from("exams").select("*").eq("student_id", student.id),
-          supabase.from("announcements").select("*").order("created_at", { ascending: false }).limit(10)
+        supabase.from("fees").select("*").eq("student_id", student.id),
+        supabase.from("exams").select("*").eq("student_id", student.id),
+        supabase.from("announcements").select("*").order("created_at", { ascending: false }).limit(10)
       ]);
       return res.json({ student, fees: fees.data, exams: exams.data, announcements: ann.data });
     }
