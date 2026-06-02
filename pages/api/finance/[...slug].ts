@@ -11,7 +11,8 @@ export default async function handler(req: AuthenticatedRequest, res: NextApiRes
 
         // /api/finance/structure
         if (path.startsWith('structure')) {
-            const className = path.split('/')[1];
+            const rawClassName = path.split('/')[1];
+            const className = rawClassName ? decodeURIComponent(rawClassName) : '';
             if (req.method === "GET") {
                 const { data, error } = await supabase.from("fee_structure").select("*").order("class");
                 if (error) throw error;
@@ -72,9 +73,14 @@ export default async function handler(req: AuthenticatedRequest, res: NextApiRes
             }
             if (req.method === "DELETE" && className) {
                 if (user.role !== "headteacher") return res.status(403).json({ error: "Forbidden" });
-                const { error } = await supabase.from("fee_structure").delete().eq("class", className);
-                if (error) throw error;
-                return res.json({ message: "Structure deleted" });
+                try {
+                    const { error } = await supabase.from("fee_structure").delete().eq("class", className);
+                    if (error) throw error;
+                    return res.json({ message: `Structure for ${className} deleted successfully` });
+                } catch (e: any) {
+                    console.error('Delete error:', e);
+                    return res.status(400).json({ error: e.message || 'Failed to delete structure' });
+                }
             }
         }
 

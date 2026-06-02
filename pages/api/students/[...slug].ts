@@ -29,9 +29,37 @@ export default async function handler(req: AuthenticatedRequest, res: NextApiRes
       };
       const nextClass = promotionMap[className];
       if (!nextClass) return res.status(400).json({ error: 'No promotion path configured for this class.' });
-      const { error } = await supabase.from('students').update({ class: nextClass }).eq('class', className);
-      if (error) throw error;
-      return res.json({ from: className, to: nextClass });
+
+      // 1. Promote students to next class
+      const { error: studentError } = await supabase.from('students').update({ class: nextClass }).eq('class', className);
+      if (studentError) throw studentError;
+
+      // 2. Update teacher class assignments when a class is promoted
+      // Find all teachers with the current class in their classes array
+      const { data: affectedTeachers, error: teacherFetchError } = await supabase
+        .from('teachers')
+        .select('id, classes')
+        .contains('classes', [className]); // PostgreSQL array contains
+
+      if (teacherFetchError) throw teacherFetchError;
+
+      // Update each affected teacher's class assignment
+      if (affectedTeachers && affectedTeachers.length > 0) {
+        for (const teacher of affectedTeachers) {
+          const updatedClasses = teacher.classes.map((c: string) => c === className ? nextClass : c);
+          const { error: updateError } = await supabase
+            .from('teachers')
+            .update({ classes: updatedClasses })
+            .eq('id', teacher.id);
+          if (updateError) throw updateError;
+        }
+      }
+
+      return res.json({
+        from: className,
+        to: nextClass,
+        teachersUpdated: affectedTeachers?.length || 0
+      });
     }
 
 

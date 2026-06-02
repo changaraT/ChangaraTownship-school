@@ -423,22 +423,22 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-white text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-emerald-900 rounded-xl flex items-center justify-center text-white shadow-xl">
+            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-sm">
               <School size={22} />
             </div>
             <div className="hidden sm:block leading-none">
               <span className="font-black text-[13px] uppercase tracking-tighter block">Changara Township</span>
-              <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Excellence in every step</span>
+              <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-widest">School Management System</span>
             </div>
           </div>
           <button
             onClick={onGoToLogin}
-            className="px-8 py-3 bg-emerald-900 text-white rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-emerald-800 transition-all shadow-xl shadow-emerald-900/10 active:scale-95"
+            className="px-8 py-3 bg-slate-900 text-white rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-slate-800 transition-all shadow-sm active:scale-95"
           >
             Access Portal
           </button>
@@ -447,38 +447,35 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
 
       {/* Hero Section */}
       <header className="relative pt-48 pb-24 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-emerald-50 rounded-full blur-[120px] -mr-96 -mt-96 opacity-60"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-50 rounded-full blur-[100px] -ml-40 -mb-40 opacity-40"></div>
+        <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-indigo-50 rounded-full blur-[120px] -mr-96 -mt-96 opacity-70"></div>
+        <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-slate-100 rounded-full blur-[110px] -ml-56 -mb-56 opacity-55"></div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-center lg:text-left">
           <div className="max-w-4xl mx-auto lg:mx-0 space-y-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-3 px-5 py-2 bg-emerald-50/50 rounded-full border border-emerald-100 backdrop-blur-sm"
+              className="inline-flex items-center gap-3 px-5 py-2 bg-white/70 rounded-full border border-slate-200 backdrop-blur-sm shadow-sm"
             >
-              <div className="flex -space-x-1">
-                {[1, 2, 3].map(i => <div key={i} className="w-5 h-5 rounded-full bg-emerald-200 border-2 border-white"></div>)}
-              </div>
-              <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Nurturing potential since 2025</span>
+              <span className="text-[10px] font-black text-slate-700 uppercase tracking-widest">Modern administration • Transparent finance • Verified reporting</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-7xl lg:text-9xl font-black tracking-tighter leading-[0.85] text-slate-900"
+              className="text-6xl lg:text-7xl font-black tracking-tighter leading-[1.02] text-slate-900"
             >
-              Cultivating the <br /><span className="text-emerald-700">Architects</span> of Tomorrow.
+              A corporate-grade <span className="text-indigo-700">School Management System</span> for Changara Township.
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl lg:text-2xl text-slate-500 font-medium italic max-w-2xl leading-relaxed mx-auto lg:mx-0"
+              className="text-lg lg:text-xl text-slate-600 font-medium max-w-2xl leading-relaxed mx-auto lg:mx-0"
             >
-              "Excellence in Every Step" — We provide a premier learning environment focused on academic distinction, digital literacy, and character development.
+              Streamline admissions, fee recording, receipts, and academic reporting in one secure portal—designed for Headteacher operations and parent visibility.
             </motion.p>
 
             <motion.div
@@ -489,20 +486,20 @@ const LandingPage = ({ onGoToLogin }: { onGoToLogin: () => void }) => {
             >
               <button
                 onClick={onGoToLogin}
-                className="px-12 py-6 bg-emerald-900 text-white rounded-[2rem] font-black text-[13px] uppercase tracking-widest hover:bg-black shadow-2xl shadow-emerald-900/20 transition-all flex items-center gap-4 group active:scale-95"
+                className="px-10 py-5 bg-slate-900 text-white rounded-[1.5rem] font-black text-[12px] uppercase tracking-widest hover:bg-slate-800 shadow-sm transition-all flex items-center gap-4 group active:scale-95"
               >
                 Enter Portal <ArrowUpRight size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
-              <div className="px-10 py-6 border border-slate-100 rounded-[2rem] bg-white/50 backdrop-blur-md">
+              <div className="px-8 py-5 border border-slate-200 rounded-[1.5rem] bg-white/70 backdrop-blur-md shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="text-left">
                     <p className="text-sm font-black text-slate-900 leading-none">{studentCount !== null ? studentCount.toLocaleString() : "0"}+</p>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Active Learners</p>
+                    <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Active Learners</p>
                   </div>
                   <div className="w-px h-8 bg-slate-100"></div>
                   <div className="text-left">
-                    <p className="text-sm font-black text-emerald-600 leading-none">98.4%</p>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Pass Coefficient</p>
+                    <p className="text-sm font-black text-indigo-700 leading-none">Secure</p>
+                    <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Audit-ready receipts</p>
                   </div>
                 </div>
               </div>
@@ -871,65 +868,238 @@ const AcademicsParentView = ({ data }: { data: any }) => {
       const markValue = rawMarks != null ? Number(rawMarks) : null;
       const grade = markValue != null ? (markValue >= 80 ? 'EE' : markValue >= 60 ? 'ME' : markValue >= 40 ? 'AE' : 'BE') : 'N/A';
       return `<tr>
-        <td style="padding:8px;border:1px solid #ddd">${sub.label}</td>
-        <td style="padding:8px;border:1px solid #ddd;text-align:center">${markValue != null ? `${markValue}%` : 'N/A'}</td>
-        <td style="padding:8px;border:1px solid #ddd;text-align:center">${grade}</td>
+        <td style="padding:12px;border:1px solid #ddd;text-align:left">${sub.label}</td>
+        <td style="padding:12px;border:1px solid #ddd;text-align:center;font-weight:bold">${markValue != null ? `${markValue}%` : 'N/A'}</td>
+        <td style="padding:12px;border:1px solid #ddd;text-align:center;font-weight:bold;background:#f0f9ff">${grade}</td>
       </tr>`;
     }).join('');
 
-    const positionLine = result?.position ? `<p style="margin:0 0 8px 0;font-size:14px;font-weight:700">Class Position: ${result.position}</p>` : '';
-    const remarksLine = result?.remarks ? `<p style="margin:0 0 8px 0;font-size:13px">Remarks: ${result.remarks}</p>` : '';
+    const positionLine = result?.position ? `<p style="margin:12px 0;font-size:15px;font-weight:700;color:#0f172a">📊 Class Position: <span style="color:#667eea">${result.position}</span> out of ${totalStudents || 'class'}</p>` : '';
+    const remarksLine = result?.remarks ? `<div style="margin:16px 0;padding:16px;background:#f8fafc;border-left:4px solid #667eea;border-radius:4px"><p style="margin:0 0 8px 0;font-size:13px;font-weight:700;color:#64748b">TEACHER REMARKS:</p><p style="margin:0;font-size:14px;font-style:italic;color:#0f172a">"${result.remarks}"</p></div>` : '';
 
     return `
       <html>
         <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>${data.student.name} - Academic Report</title>
           <style>
-            body { font-family: Arial, Helvetica, sans-serif; color:#111; margin:24px; }
-            h1, h2, h3, p { margin:0; }
-            .header { margin-bottom:24px; }
-            .header h1 { font-size:28px; margin-bottom:8px; }
-            .logo-row { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
-            .logo { width:80px; height:80px; object-fit:contain; }
-            .student-info { margin-top:12px; font-size:14px; line-height:1.6; }
-            .student-info span { display:block; }
-            .details { margin-top:18px; }
-            .report-table { width:100%; border-collapse:collapse; margin-top:16px; }
-            .report-table th, .report-table td { border:1px solid #ddd; padding:10px; }
-            .report-table th { background:#f8fafc; text-align:left; }
-            .footer { margin-top:24px; font-size:13px; color:#4b5563; }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { 
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              color: #0f172a;
+              line-height: 1.6;
+              background: #f8fafc;
+              padding: 20px;
+            }
+            .container {
+              max-width: 900px;
+              margin: 0 auto;
+              background: white;
+              border-radius: 16px;
+              box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+              overflow: hidden;
+            }
+            .header {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 32px;
+              display: flex;
+              gap: 24px;
+              align-items: center;
+            }
+            .logo-section {
+              flex-shrink: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100px;
+              height: 100px;
+              background: rgba(255,255,255,0.1);
+              border-radius: 16px;
+              padding: 8px;
+              backdrop-filter: blur(10px);
+            }
+            .logo {
+              max-width: 100%;
+              max-height: 100%;
+              width: auto;
+              height: auto;
+              object-fit: contain;
+            }
+            .header-content h1 {
+              font-size: 28px;
+              margin-bottom: 4px;
+              font-weight: 700;
+              letter-spacing: -0.5px;
+            }
+            .header-content .school-name {
+              font-size: 13px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              opacity: 0.95;
+            }
+            .content {
+              padding: 32px;
+            }
+            .section {
+              margin-bottom: 28px;
+            }
+            .section-title {
+              font-size: 16px;
+              font-weight: 700;
+              color: #0f172a;
+              margin-bottom: 16px;
+              padding-bottom: 8px;
+              border-bottom: 3px solid #667eea;
+              display: inline-block;
+            }
+            .info-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 16px;
+              margin-bottom: 20px;
+            }
+            .info-item {
+              padding: 12px;
+              background: #f8fafc;
+              border-radius: 8px;
+              border-left: 4px solid #667eea;
+            }
+            .info-label {
+              font-size: 12px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              color: #64748b;
+              margin-bottom: 4px;
+            }
+            .info-value {
+              font-size: 15px;
+              font-weight: 700;
+              color: #0f172a;
+            }
+            .report-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 12px;
+              background: white;
+              border-radius: 8px;
+              overflow: hidden;
+            }
+            .report-table th {
+              background: #f1f5f9;
+              padding: 14px;
+              text-align: left;
+              font-weight: 700;
+              font-size: 13px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              color: #475569;
+              border-bottom: 2px solid #e2e8f0;
+            }
+            .report-table td {
+              padding: 12px 14px;
+              border-bottom: 1px solid #e2e8f0;
+            }
+            .report-table tbody tr:hover {
+              background: #f8fafc;
+            }
+            .report-table tbody tr:last-child td {
+              border-bottom: none;
+            }
+            .position-badge {
+              display: inline-block;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 8px 16px;
+              border-radius: 20px;
+              font-size: 13px;
+              font-weight: 700;
+            }
+            .remarks-box {
+              background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%);
+              border-left: 4px solid #667eea;
+              border-radius: 8px;
+              padding: 16px;
+              margin-top: 16px;
+            }
+            .footer {
+              background: #f8fafc;
+              padding: 20px 32px;
+              border-top: 1px solid #e2e8f0;
+              text-align: center;
+              font-size: 11px;
+              color: #64748b;
+            }
+            @media print {
+              body { background: white; padding: 0; }
+              .container { box-shadow: none; border-radius: 0; }
+              .header { page-break-after: avoid; }
+            }
           </style>
         </head>
         <body>
-          <div class="header">
-            <div class="logo-row">
-              <img src="/icon-512.png" alt="School logo" class="logo" />
-              <h1>Academic Result</h1>
+          <div class="container">
+            <div class="header">
+              <div class="logo-section">
+                <img src="/icon-512.png" alt="School Logo" class="logo" />
+              </div>
+              <div class="header-content">
+                <h1>Academic Result</h1>
+                <div class="school-name">Changara Township School</div>
+              </div>
             </div>
-            <div class="student-info">
-              <span><strong>Learner:</strong> ${data.student.name}</span>
-              <span><strong>Admission No:</strong> ${data.student.admission_number}</span>
-              <span><strong>Class:</strong> ${data.student.class}</span>
-              <span><strong>Assessment:</strong> ${examType} | ${term} ${year}</span>
+            
+            <div class="content">
+              <div class="section">
+                <div class="section-title">Student Information</div>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <div class="info-label">Learner Name</div>
+                    <div class="info-value">${data.student.name}</div>
+                  </div>
+                  <div class="info-item">
+                    <div class="info-label">Admission No</div>
+                    <div class="info-value">${data.student.admission_number}</div>
+                  </div>
+                  <div class="info-item">
+                    <div class="info-label">Class</div>
+                    <div class="info-value">${data.student.class}</div>
+                  </div>
+                  <div class="info-item">
+                    <div class="info-label">Assessment Period</div>
+                    <div class="info-value">${examType} | ${term} ${year}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-title">Academic Performance</div>
+                ${positionLine}
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Subject</th>
+                      <th style="text-align:center">Mark (%)</th>
+                      <th style="text-align:center">Metric</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${subjectRows}
+                  </tbody>
+                </table>
+              </div>
+
+              ${remarksLine}
+            </div>
+
+            <div class="footer">
+              <div>This is an official academic report issued by Changara Township School.</div>
+              <div style="margin-top: 8px;">Generated on ${new Date().toLocaleString()}</div>
             </div>
           </div>
-          <div class="details">
-            ${positionLine}
-            ${remarksLine}
-          </div>
-          <table class="report-table">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th style="text-align:center">Mark</th>
-                <th style="text-align:center">Metric</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${subjectRows}
-            </tbody>
-          </table>
-          <div class="footer">This report includes only student details, subject marks, and position for print/pdf use.</div>
         </body>
       </html>
     `;
@@ -977,67 +1147,112 @@ const AcademicsParentView = ({ data }: { data: any }) => {
     const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
     const leftPadding = 40;
     const pageWidth = pdf.internal.pageSize.getWidth();
-    let y = 60;
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    let y = 50;
 
+    // Add logo and header
     if (logo) {
-      pdf.addImage(logo, 'PNG', leftPadding, y - 20, 60, 60);
+      try {
+        pdf.addImage(logo, 'PNG', leftPadding, y, 70, 70);
+      } catch (e) {
+        console.error('Failed to add logo:', e);
+      }
     }
 
-    pdf.setFontSize(20);
-    pdf.text('Academic Result', logo ? leftPadding + 80 : leftPadding, y);
-    y += 40;
+    // School name and header
+    pdf.setFontSize(18);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('CHANGARA TOWNSHIP SCHOOL', logo ? leftPadding + 85 : leftPadding, y + 10);
 
-    pdf.setFontSize(11);
-    pdf.text(`Learner: ${data.student.name}`, leftPadding, y);
-    y += 18;
-    pdf.text(`Admission No: ${data.student.admission_number}`, leftPadding, y);
-    y += 18;
-    pdf.text(`Class: ${data.student.class}`, leftPadding, y);
-    y += 18;
-    pdf.text(`Assessment: ${examType} | ${term} ${year}`, leftPadding, y);
-    y += 24;
-
-    if (result?.position) {
-      pdf.setFontSize(12);
-      pdf.text(`Class Position: ${result.position}`, leftPadding, y);
-      y += 18;
-    }
-    if (result?.remarks) {
-      pdf.setFontSize(11);
-      pdf.text(`Remarks: ${result.remarks}`, leftPadding, y);
-      y += 24;
-    }
-
-    pdf.setLineWidth(0.5);
-    pdf.line(leftPadding, y, pageWidth - leftPadding, y);
-    y += 16;
     pdf.setFontSize(12);
-    pdf.text('Subject', leftPadding, y);
+    pdf.setFont(undefined, 'normal');
+    pdf.text('Academic Result Report', logo ? leftPadding + 85 : leftPadding, y + 30);
+
+    y += 80;
+
+    // Student information section
+    pdf.setFontSize(11);
+    pdf.setFont(undefined, 'bold');
+    pdf.text('Student Information', leftPadding, y);
+    y += 18;
+
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'normal');
+    pdf.text(`Name: ${data.student.name}`, leftPadding, y);
+    y += 14;
+    pdf.text(`Admission No: ${data.student.admission_number}`, leftPadding, y);
+    y += 14;
+    pdf.text(`Class: ${data.student.class}`, leftPadding, y);
+    y += 14;
+    pdf.text(`Assessment: ${examType} | ${term} ${year}`, leftPadding, y);
+    y += 20;
+
+    // Position and remarks
+    if (result?.position) {
+      pdf.setFont(undefined, 'bold');
+      pdf.text(`Class Position: ${result.position} out of ${totalStudents || 'class'}`, leftPadding, y);
+      y += 14;
+    }
+
+    if (result?.remarks) {
+      pdf.setFont(undefined, 'normal');
+      pdf.text('Remarks:', leftPadding, y);
+      y += 10;
+      const remarks = pdf.splitTextToSize(result.remarks, pageWidth - (2 * leftPadding));
+      pdf.text(remarks, leftPadding, y);
+      y += (remarks.length * 10) + 10;
+    }
+
+    // Academic results table
+    y += 10;
+    pdf.setFont(undefined, 'bold');
+    pdf.setFontSize(11);
+    pdf.text('Academic Performance', leftPadding, y);
+    y += 16;
+
+    // Table headers
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'bold');
+    pdf.rect(leftPadding, y - 10, pageWidth - (2 * leftPadding), 12);
+    pdf.text('Subject', leftPadding + 8, y);
     pdf.text('Mark', pageWidth / 2 - 20, y, { align: 'center' });
     pdf.text('Metric', pageWidth - leftPadding - 20, y, { align: 'right' });
-    y += 10;
-    pdf.line(leftPadding, y, pageWidth - leftPadding, y);
     y += 18;
 
-    subjects.forEach((sub) => {
+    // Table rows
+    pdf.setFont(undefined, 'normal');
+    pdf.setFontSize(9);
+    subjects.forEach((sub, index) => {
+      if (y > pageHeight - 60) {
+        pdf.addPage();
+        y = 40;
+      }
+
       const rawMarks = result?.[sub.key];
       const markValue = rawMarks != null ? Number(rawMarks) : null;
       const metric = markValue != null ? (markValue >= 80 ? 'EE' : markValue >= 60 ? 'ME' : markValue >= 40 ? 'AE' : 'BE') : 'N/A';
       const markLabel = markValue != null ? `${markValue}%` : 'N/A';
 
-      if (y > pdf.internal.pageSize.getHeight() - 80) {
-        pdf.addPage();
-        y = 60;
+      if (index % 2 === 0) {
+        pdf.setFillColor(245, 245, 250);
+        pdf.rect(leftPadding, y - 8, pageWidth - (2 * leftPadding), 12, 'F');
       }
 
-      pdf.setFontSize(11);
-      pdf.text(sub.label, leftPadding, y);
+      pdf.text(sub.label, leftPadding + 8, y);
       pdf.text(markLabel, pageWidth / 2 - 20, y, { align: 'center' });
       pdf.text(metric, pageWidth - leftPadding - 20, y, { align: 'right' });
-      y += 18;
+      y += 12;
     });
 
-    pdf.save(`${data.student.name.replace(/\s+/g, '_')}_${term}_${year}.pdf`);
+    // Footer
+    y = pageHeight - 30;
+    pdf.setFontSize(8);
+    pdf.setFont(undefined, 'normal');
+    pdf.setTextColor(120, 120, 120);
+    pdf.text('This document is an official academic result issued by Changara Township School.', leftPadding, y);
+    pdf.text(`Generated on ${new Date().toLocaleString()}`, leftPadding, y + 10);
+
+    pdf.save(`${data.student.name.replace(/\s+/g, '_')}_Results_${term}_${year}.pdf`);
   };
 
   return (
@@ -1172,11 +1387,8 @@ const AcademicsParentView = ({ data }: { data: any }) => {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <Button onClick={handlePrintStudentReport} className="bg-white text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-100 shadow-lg">
-                    <Printer size={14} /> Official Report card
-                  </Button>
-                  <Button onClick={handleDownloadStudentPdf} className="bg-slate-100 text-slate-900 px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-slate-200 shadow-lg">
-                    <Download size={14} /> Download PDF
+                  <Button onClick={handleDownloadStudentPdf} className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 hover:bg-emerald-700 shadow-lg">
+                    <Download size={14} /> Download Results (PDF)
                   </Button>
                 </div>
               </div>
@@ -2031,13 +2243,14 @@ const DashboardShell = () => {
 const ClassTeacherDashboard = () => {
   const { user } = useAuth();
   const [students, setStudents] = useState<any[]>([]);
-  const [selectedClass, setSelectedClass] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const itemsPerPage = 15;
 
   useEffect(() => {
-    fetch('/api/students', { credentials: 'include' }).then(res => res.json()).then(setStudents);
-    if (user?.role === 'teacher' && (user as any).teacherInfo?.classes?.length > 0) {
-      setSelectedClass((user as any).teacherInfo.classes[0]);
-    }
+    fetch('/api/students', { credentials: 'include' }).then(res => res.json()).then(data => {
+      setStudents(Array.isArray(data) ? data : (data.data || []));
+    });
   }, [user]);
 
   const teacherInfo = (user as any)?.teacherInfo;
@@ -2057,7 +2270,35 @@ const ClassTeacherDashboard = () => {
     );
   }
 
-  const classStudents = students.filter(s => s.class === selectedClass);
+  // Get the ONLY class this teacher is assigned to (they can only manage one class as ClassTeacher)
+  const assignedClass = teacherInfo?.classes?.[0] || '';
+
+  if (!assignedClass) {
+    return (
+      <Card className="p-20 text-center space-y-6 bg-slate-50 border-dashed border-2 border-slate-200 rounded-[3rem]">
+        <div className="w-20 h-20 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center mx-auto shadow-inner border border-red-100">
+          <XCircle size={40} />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-2xl font-black text-slate-800 tracking-tight">No Class Assigned</h3>
+          <p className="text-slate-500 font-medium max-w-sm mx-auto italic">You have not been assigned to any class yet. Please contact the headteacher.</p>
+        </div>
+      </Card>
+    );
+  }
+
+  const classStudents = students
+    .filter(s => s.class === assignedClass)
+    .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.admission_number.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const totalPages = Math.ceil(classStudents.length / itemsPerPage);
+  const paginatedStudents = classStudents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  // Reset pagination when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   return (
     <div className="space-y-10">
@@ -2065,34 +2306,37 @@ const ClassTeacherDashboard = () => {
         <div className="space-y-2">
           <h2 className="text-4xl font-black text-slate-900 tracking-tighter">CBC Master Dashboard</h2>
           <p className="text-slate-500 font-medium flex items-center gap-2 italic">
-            <UserSquare size={16} className="text-indigo-400" /> Administrative Hub for Class:
-            <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-lg not-italic font-black text-[10px] tracking-widest border border-indigo-100">{selectedClass}</span>
+            <UserSquare size={16} className="text-indigo-400" /> Assigned Class:
+            <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-lg not-italic font-black text-[10px] tracking-widest border border-indigo-100">{assignedClass}</span>
           </p>
+          <p className="text-xs text-slate-400 italic">⚠️ You can only view and manage results for your assigned class {assignedClass}</p>
         </div>
-        <div className="flex gap-4">
-          {teacherInfo.classes.map((c: string) => (
-            <Button
-              key={c}
-              onClick={() => setSelectedClass(c)}
-              className={cn(
-                "px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-sm",
-                selectedClass === c ? "bg-indigo-600 text-white shadow-xl shadow-indigo-200" : "bg-white text-slate-400 hover:text-slate-600 border border-slate-100"
-              )}
-            >
-              {c} Profile
-            </Button>
-          ))}
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-4">
+          <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Class Status</p>
+          <p className="text-2xl font-black text-emerald-700 mt-2">{classStudents.length} Learners</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <Card className="lg:col-span-2 p-10 bg-white border border-slate-100 shadow-2xl rounded-[3rem] overflow-hidden relative">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             <h3 className="font-black text-xl text-slate-800 tracking-tight">Learner Progression Tracker</h3>
             <span className="text-[10px] font-black text-indigo-400 bg-indigo-50 px-4 py-2 rounded-xl uppercase tracking-widest border border-indigo-100 flex items-center gap-2">
               <Menu size={12} /> {classStudents.length} Active Profiles
             </span>
           </div>
+
+          {/* Search Bar */}
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search by name or admission number..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-indigo-600 placeholder-slate-400"
+            />
+          </div>
+
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -2104,28 +2348,76 @@ const ClassTeacherDashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {classStudents.map(s => (
-                  <tr key={s.id} className="group hover:bg-slate-50 transition-colors">
-                    <td className="py-6 font-mono text-[10px] font-black text-indigo-400 pl-4">#{s.admission_number}</td>
-                    <td className="py-6 font-black text-slate-800 tracking-tight whitespace-nowrap">{s.name}</td>
-                    <td className="py-6">
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 max-w-[120px] h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div className="h-full w-[75%] bg-indigo-500 rounded-full"></div>
+                {paginatedStudents.length > 0 ? (
+                  paginatedStudents.map(s => (
+                    <tr key={s.id} className="group hover:bg-slate-50 transition-colors">
+                      <td className="py-6 font-mono text-[10px] font-black text-indigo-400 pl-4">#{s.admission_number}</td>
+                      <td className="py-6 font-black text-slate-800 tracking-tight whitespace-nowrap">{s.name}</td>
+                      <td className="py-6">
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1 max-w-[120px] h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-full w-[75%] bg-indigo-500 rounded-full"></div>
+                          </div>
+                          <span className="text-[10px] font-black text-slate-400">ME (75%)</span>
                         </div>
-                        <span className="text-[10px] font-black text-slate-400">ME (75%)</span>
-                      </div>
-                    </td>
-                    <td className="py-6 pr-4">
-                      <Button className="text-[9px] font-black text-indigo-600 bg-indigo-50 px-4 py-2 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-all uppercase tracking-widest">
-                        View Transcript
-                      </Button>
+                      </td>
+                      <td className="py-6 pr-4">
+                        <Button className="text-[9px] font-black text-indigo-600 bg-indigo-50 px-4 py-2 rounded-xl group-hover:bg-indigo-600 group-hover:text-white transition-all uppercase tracking-widest">
+                          View Transcript
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
+                      No students found
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {classStudents.length > itemsPerPage && (
+            <div className="mt-8 flex items-center justify-between pt-6 border-t border-slate-100">
+              <span className="text-sm font-black text-slate-500">
+                Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, classStudents.length)} of {classStudents.length}
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 disabled:opacity-50 hover:bg-slate-200 transition-all"
+                >
+                  <ChevronLeft size={16} />
+                </Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <Button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={cn(
+                      "px-3 py-2 rounded-lg text-sm font-black transition-all",
+                      currentPage === page
+                        ? "bg-indigo-600 text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    )}
+                  >
+                    {page}
+                  </Button>
+                ))}
+                <Button
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 disabled:opacity-50 hover:bg-slate-200 transition-all"
+                >
+                  <ChevronRight size={16} />
+                </Button>
+              </div>
+            </div>
+          )}
+
         </Card>
 
         <div className="space-y-10">
@@ -2167,8 +2459,8 @@ const ClassTeacherDashboard = () => {
             </Button>
           </Card>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
@@ -2550,14 +2842,29 @@ const ParentsManagement = () => {
 const FeeStructureManagement = () => {
   const [structures, setStructures] = useState<any[]>([]);
   const [showAdd, setShowAdd] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ class: '', term1: '', term2: '', term3: '' });
   const [saving, setSaving] = useState(false);
 
-  const fetchStructures = () => fetch('/api/fee-structure', { credentials: 'include' }).then(res => res.json()).then(setStructures);
+  const fetchStructures = async () => {
+    try {
+      const res = await fetch('/api/fee-structure', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        setStructures(data);
+      }
+    } catch (error) {
+      console.error('Error fetching structures:', error);
+    }
+  };
   useEffect(() => { fetchStructures(); }, []);
 
   const handleBulkAdd = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.class || !formData.term1 || !formData.term2 || !formData.term3) {
+      alert('Please fill in all fields');
+      return;
+    }
     setSaving(true);
     try {
       const res = await fetch('/api/fee-structure', {
@@ -2574,23 +2881,58 @@ const FeeStructureManagement = () => {
 
       if (res.ok) {
         setShowAdd(false);
+        setIsEditing(false);
         setFormData({ class: '', term1: '', term2: '', term3: '' });
-        fetchStructures();
-        alert(`Institutional fee structure for ${formData.class} level has been successfully applied.`);
+        await fetchStructures();
+        alert(`Institutional fee structure for ${formData.class} level has been successfully ${isEditing ? 'updated' : 'applied'}.`);
+      } else {
+        const error = await res.json();
+        alert(`Error: ${error.error || 'Failed to save fee structure'}`);
       }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while saving the fee structure');
     } finally {
       setSaving(false);
     }
   };
 
   const deleteStructureByClass = async (className: string) => {
-    if (!confirm(`Are you sure you want to revoke the rate schedule for ${className}?`)) return;
-    await fetch(`/api/fee-structure/${className}`, { method: 'DELETE', credentials: 'include' });
-    fetchStructures();
+    if (!confirm(`Are you sure you want to revoke the rate schedule for ${className}? This action cannot be undone.`)) return;
+    try {
+      const res = await fetch(`/api/fee-structure/${encodeURIComponent(className)}`, { method: 'DELETE', credentials: 'include' });
+      if (res.ok) {
+        await fetchStructures();
+        alert(`Rate schedule for ${className} has been successfully deleted.`);
+      } else {
+        const error = await res.json();
+        alert(`Error: ${error.error || 'Failed to delete fee structure'}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while deleting the fee structure');
+    }
   };
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleEditClick = (className: string, rates: any) => {
+    setFormData({
+      class: className,
+      term1: rates.t1.toString(),
+      term2: rates.t2.toString(),
+      term3: rates.t3.toString(),
+    });
+    setIsEditing(true);
+    setShowAdd(true);
+  };
+
+  const closeForm = () => {
+    setShowAdd(false);
+    setIsEditing(false);
+    setFormData({ class: '', term1: '', term2: '', term3: '' });
   };
 
   return (
@@ -2604,7 +2946,11 @@ const FeeStructureManagement = () => {
           <Button onClick={handlePrint} className="bg-slate-50 text-slate-600 border border-slate-200 px-8 py-4 rounded-2xl flex items-center gap-3 hover:bg-slate-100 transition-all shadow-sm">
             <Printer size={20} /> Export Matrix
           </Button>
-          <Button onClick={() => setShowAdd(true)} className="bg-slate-900 text-white flex items-center gap-3 px-8 py-4 rounded-2xl shadow-2xl hover:bg-black transition-all font-black text-[10px] uppercase tracking-widest">
+          <Button onClick={() => {
+            setIsEditing(false);
+            setFormData({ class: '', term1: '', term2: '', term3: '' });
+            setShowAdd(true);
+          }} className="bg-slate-900 text-white flex items-center gap-3 px-8 py-4 rounded-2xl shadow-2xl hover:bg-black transition-all font-black text-[10px] uppercase tracking-widest">
             <Plus size={20} /> Configure Level Rates
           </Button>
         </div>
@@ -2613,8 +2959,8 @@ const FeeStructureManagement = () => {
       {showAdd && (
         <Card className="p-10 border-none shadow-2xl rounded-[3rem] bg-white border-2 border-slate-50">
           <div className="flex justify-between items-center mb-10">
-            <h3 className="text-xl font-black text-slate-800 tracking-tight">New Level Rate Configuration</h3>
-            <button onClick={() => setShowAdd(false)} className="text-slate-300 hover:text-slate-600 transition-colors">
+            <h3 className="text-xl font-black text-slate-800 tracking-tight">{isEditing ? 'Edit' : 'New'} Level Rate Configuration</h3>
+            <button onClick={closeForm} className="text-slate-300 hover:text-slate-600 transition-colors">
               <X size={24} />
             </button>
           </div>
@@ -2622,7 +2968,12 @@ const FeeStructureManagement = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Target Grade/Level</label>
-                <select className="w-full h-16 bg-slate-50 px-6 rounded-2xl font-black text-xs uppercase tracking-widest border-none outline-none focus:ring-2 focus:ring-slate-900 transition-all" value={formData.class} onChange={e => setFormData({ ...formData, class: e.target.value })} required>
+                <select
+                  className="w-full h-16 bg-slate-50 px-6 rounded-2xl font-black text-xs uppercase tracking-widest border-none outline-none focus:ring-2 focus:ring-slate-900 transition-all"
+                  value={formData.class}
+                  onChange={e => setFormData({ ...formData, class: e.target.value })}
+                  disabled={isEditing}
+                  required>
                   <option value="">Select Level Category</option>
                   <option value="Foundation & Pre-Primary">Foundation & Pre-Primary (PP1-PP2)</option>
                   <option value="Lower/Upper Primary">Lower/Upper Primary (Grades 1-6)</option>
@@ -2633,45 +2984,48 @@ const FeeStructureManagement = () => {
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 1 Rate (KSH)</label>
                 <input
                   className="h-16 w-full bg-slate-50 border-none rounded-2xl font-black text-lg px-4 outline-none transition-all focus:ring-2 focus:ring-slate-900"
-                  type="text"
+                  type="number"
                   autoComplete="off"
                   value={formData.term1}
-                  onChange={e => setFormData({ ...formData, term1: e.target.value.replace(/[^0-9]/g, '') })}
+                  onChange={e => setFormData({ ...formData, term1: e.target.value })}
                   required
                   placeholder="0.00"
+                  min="0"
                 />
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 2 Rate (KSH)</label>
                 <input
                   className="h-16 w-full bg-slate-50 border-none rounded-2xl font-black text-lg px-4 outline-none transition-all focus:ring-2 focus:ring-slate-900"
-                  type="text"
+                  type="number"
                   autoComplete="off"
                   value={formData.term2}
-                  onChange={e => setFormData({ ...formData, term2: e.target.value.replace(/[^0-9]/g, '') })}
+                  onChange={e => setFormData({ ...formData, term2: e.target.value })}
                   required
                   placeholder="0.00"
+                  min="0"
                 />
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Term 3 Rate (KSH)</label>
                 <input
                   className="h-16 w-full bg-slate-50 border-none rounded-2xl font-black text-lg px-4 outline-none transition-all focus:ring-2 focus:ring-slate-900"
-                  type="text"
+                  type="number"
                   autoComplete="off"
                   value={formData.term3}
-                  onChange={e => setFormData({ ...formData, term3: e.target.value.replace(/[^0-9]/g, '') })}
+                  onChange={e => setFormData({ ...formData, term3: e.target.value })}
                   required
                   placeholder="0.00"
+                  min="0"
                 />
               </div>
             </div>
             <div className="flex gap-4 pt-4">
               <Button type="submit" disabled={saving} className="flex-1 h-16 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
                 {saving ? <Loader2 className="animate-spin" /> : <ShieldCheck size={20} />}
-                Commit Rate Schedule to Registry
+                {isEditing ? 'Update' : 'Commit'} Rate Schedule to Registry
               </Button>
-              <Button type="button" onClick={() => setShowAdd(false)} className="px-10 h-16 bg-slate-50 text-slate-400 rounded-2xl font-black text-[10px] uppercase tracking-widest">Cancel</Button>
+              <Button type="button" onClick={closeForm} className="px-10 h-16 bg-slate-50 text-slate-400 rounded-2xl font-black text-[10px] uppercase tracking-widest">Cancel</Button>
             </div>
           </form>
         </Card>
@@ -2742,18 +3096,10 @@ const FeeStructureManagement = () => {
                             </td>
                             <td className="px-12 py-8 print:hidden text-right">
                               <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onClick={() => {
-                                  setFormData({
-                                    class: className,
-                                    term1: rates.t1.toString(),
-                                    term2: rates.t2.toString(),
-                                    term3: rates.t3.toString(),
-                                  });
-                                  setShowAdd(true);
-                                }} className="text-slate-300 hover:text-indigo-600 transition-colors p-3 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100">
+                                <button type="button" onClick={() => handleEditClick(className, rates)} className="text-slate-300 hover:text-indigo-600 transition-colors p-3 rounded-2xl hover:bg-indigo-50 border border-transparent hover:border-indigo-100">
                                   <Edit size={18} />
                                 </button>
-                                <button onClick={() => deleteStructureByClass(className)} className="text-slate-300 hover:text-rose-600 transition-colors p-3 rounded-2xl hover:bg-rose-50 border border-transparent hover:border-rose-100">
+                                <button type="button" onClick={() => deleteStructureByClass(className)} className="text-slate-300 hover:text-rose-600 transition-colors p-3 rounded-2xl hover:bg-rose-50 border border-transparent hover:border-rose-100">
                                   <Trash2 size={18} />
                                 </button>
                               </div>
@@ -3595,25 +3941,165 @@ const TeachersManagement = () => {
 
 const FeesManagement = () => {
   const [students, setStudents] = useState<Student[]>([]);
-  const [showAdd, setShowAdd] = useState(false);
-  const [formData, setFormData] = useState({ student_id: '', amount: '', term: '', status: 'paid', food_type: '' });
+  const [foodItems, setFoodItems] = useState<any[]>([]);
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedTerm, setSelectedTerm] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [feeForm, setFeeForm] = useState<Record<number, { tuition: string; food: Record<number, string>; term: string; status: string; foodBroughtText?: string }>>({});
+  const [savingStudentId, setSavingStudentId] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showFoodManager, setShowFoodManager] = useState(false);
+  const [newFoodItem, setNewFoodItem] = useState({ name: '', unit_price: '' });
+  const itemsPerPage = 15;
 
   useEffect(() => {
-    fetch('/api/students', { credentials: 'include' }).then(res => res.json()).then(setStudents);
+    // Fetch students
+    fetch('/api/students', { credentials: 'include' }).then(res => res.json()).then(data => {
+      setStudents(Array.isArray(data) ? data : (data.data || []));
+    });
+
+    // Fetch food items
+    fetch('/api/finance/food-items', { credentials: 'include' }).then(res => res.json()).then(setFoodItems);
   }, []);
 
-  const handleAdd = async (e: React.FormEvent) => {
+  const classesInSystem = [...new Set(students.map(s => s.class))].sort();
+  const availableTerms = ['Term 1', 'Term 2', 'Term 3'];
+  const currentYear = getCurrentAcademicYear();
+  const availableYears = [currentYear, String(parseInt(currentYear) - 1), String(parseInt(currentYear) - 2)];
+
+  const canShowList = Boolean(selectedClass && selectedTerm && selectedYear);
+
+  const filteredStudents = canShowList
+    ? students
+      .filter(s => s.class === selectedClass)
+      .filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()) || s.admission_number.toLowerCase().includes(searchTerm.toLowerCase()))
+      .sort((a, b) => a.name.localeCompare(b.name))
+    : [];
+
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const paginatedStudents = filteredStudents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  // Reset pagination when class or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedClass, searchTerm]);
+
+  const handleFeeInputChange = (studentId: number, field: string, value: string) => {
+    setFeeForm(prev => ({
+      ...prev,
+      [studentId]: {
+        tuition: prev[studentId]?.tuition || '',
+        food: prev[studentId]?.food || {},
+        term: prev[studentId]?.term || selectedTerm,
+        status: prev[studentId]?.status || 'paid',
+        foodBroughtText: prev[studentId]?.foodBroughtText || '',
+        [field]: value
+      }
+    }));
+  };
+
+  const handleFoodItemChange = (studentId: number, foodId: number, quantity: string) => {
+    setFeeForm(prev => ({
+      ...prev,
+      [studentId]: {
+        tuition: prev[studentId]?.tuition || '',
+        term: prev[studentId]?.term || selectedTerm,
+        status: prev[studentId]?.status || 'paid',
+        foodBroughtText: prev[studentId]?.foodBroughtText || '',
+        food: {
+          ...(prev[studentId]?.food || {}),
+          [foodId]: quantity
+        }
+      }
+    }));
+  };
+
+  const addFoodItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/fees', {
+    if (!newFoodItem.name || !newFoodItem.unit_price) {
+      alert('Please enter food item name and price');
+      return;
+    }
+
+    const res = await fetch('/api/finance/food-items', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ ...formData, amount: parseFloat(formData.amount) })
+      body: JSON.stringify({
+        name: newFoodItem.name,
+        unit_price: parseFloat(newFoodItem.unit_price)
+      })
     });
+
     if (res.ok) {
-      setShowAdd(false);
-      setFormData({ student_id: '', amount: '', term: '', status: 'paid', food_type: '' });
-      alert('Bursary entry successfully committed.');
+      setFoodItems([...foodItems, await res.json()]);
+      setNewFoodItem({ name: '', unit_price: '' });
+      alert('Food item added successfully');
+    }
+  };
+
+  const handleRecordFee = async (studentId: number) => {
+    const feeData = feeForm[studentId];
+    if (!feeData || !feeData.tuition) {
+      alert('Please enter tuition amount');
+      return;
+    }
+
+    const tuitionAmount = parseFloat(feeData.tuition);
+    if (isNaN(tuitionAmount) || tuitionAmount <= 0) {
+      alert('Tuition amount must be a valid positive number');
+      return;
+    }
+
+    // Calculate food total
+    let foodTotal = 0;
+    for (const [foodId, qty] of Object.entries(feeData.food || {})) {
+      const food = foodItems.find(f => f.id === parseInt(foodId));
+      if (food) {
+        foodTotal += food.unit_price * (parseInt(qty) || 0);
+      }
+    }
+
+    const totalAmount = tuitionAmount + foodTotal;
+
+    setSavingStudentId(studentId);
+    try {
+      const res = await fetch('/api/fees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          student_id: studentId,
+          amount: totalAmount,
+          tuition_amount: tuitionAmount,
+          food_items: feeData.food || {},
+          food_brought_text: (feeData.foodBroughtText || '').trim() || null,
+          term: selectedTerm,
+          year: parseInt(selectedYear, 10),
+          date: new Date().toISOString(),
+          status: feeData.status || 'paid'
+        })
+      });
+      if (res.ok) {
+        const created = await res.json().catch(() => null);
+        setFeeForm(prev => {
+          const updated = { ...prev };
+          delete updated[studentId];
+          return updated;
+        });
+        alert('Fee recorded successfully (Total: KSH ' + totalAmount.toLocaleString() + ')');
+        const createdId = created?.data?.[0]?.id;
+        if (createdId) {
+          const win = window.open(`/api/finance/receipt?id=${encodeURIComponent(createdId)}`, '_blank');
+          if (win) win.focus();
+        }
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        alert(`Failed to record fee: ${errData.error || 'Try again'}`);
+      }
+    } finally {
+      setSavingStudentId(null);
     }
   };
 
@@ -3621,63 +4107,309 @@ const FeesManagement = () => {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-black tracking-tight text-slate-800">Bursary & Financial Records</h2>
-        <div className="flex gap-4">
+        <div className="flex gap-3">
+          <Button onClick={() => setShowFoodManager(!showFoodManager)} className="bg-slate-50 text-slate-600 border border-slate-200 px-6 py-4 rounded-2xl flex items-center gap-2 hover:bg-slate-100 transition-all shadow-sm print:hidden">
+            <Plus size={20} /> Manage Food Items
+          </Button>
           <Button onClick={() => window.print()} className="bg-slate-50 text-slate-600 border border-slate-200 px-6 py-4 rounded-2xl flex items-center gap-2 hover:bg-slate-100 transition-all shadow-sm print:hidden">
             <Printer size={20} /> Print Ledger
-          </Button>
-          <Button onClick={() => setShowAdd(true)} className="bg-emerald-600 text-white flex items-center gap-3 px-8 py-4 rounded-2xl shadow-xl hover:bg-emerald-700">
-            <Plus size={20} /> Record New Receipt
           </Button>
         </div>
       </div>
 
-      {showAdd && (
-        <Card className="p-10 bg-white border-emerald-100 shadow-2xl rounded-[2.5rem]">
-          <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Match CBC Learner</label>
-              <select
-                className="w-full h-14 px-4 rounded-xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-emerald-600 font-black text-sm"
-                value={formData.student_id}
-                onChange={e => setFormData({ ...formData, student_id: e.target.value })}
-                required
-              >
-                <option value="">Choose learner...</option>
-                {students.map(s => <option key={s.id} value={s.id}>{s.name} ({s.admission_number})</option>)}
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">KSH Transaction Amount</label>
-              <Input className="h-14 font-black text-xl" type="number" placeholder="Enter Amount" value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} required />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Billing Term / Assessment Period</label>
-              <Input className="h-14 font-bold" placeholder="e.g. 2024 CBC Evaluation Term 1" value={formData.term} onChange={e => setFormData({ ...formData, term: e.target.value })} required />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Institutional Status</label>
-              <select
-                className="w-full h-14 px-4 rounded-xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-emerald-600 font-black text-sm"
-                value={formData.status}
-                onChange={e => setFormData({ ...formData, status: e.target.value as any })}
-                required
-              >
-                <option value="paid">SETTLED (FULL)</option>
-                <option value="pending">AWAITING (BAL)</option>
-                <option value="partial">PRORATED (PARTIAL)</option>
-              </select>
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2">Food / Supplies Type (Optional)</label>
-              <Input className="h-14 font-bold" placeholder="e.g. Maize, Beans, Rice, etc." value={formData.food_type} onChange={e => setFormData({ ...formData, food_type: e.target.value })} />
-            </div>
-            <div className="md:col-span-2 flex gap-4 pt-6">
-              <Button type="submit" className="bg-emerald-600 text-white flex-1 py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl">Commit Transaction</Button>
-              <Button type="button" onClick={() => setShowAdd(false)} className="bg-slate-100 text-slate-500 px-10 rounded-2xl font-bold text-xs uppercase tracking-widest">Discard Entry</Button>
-            </div>
-          </form>
+      {/* Food Items Manager */}
+      {showFoodManager && (
+        <Card className="p-8 bg-white border border-slate-100 shadow-2xl rounded-[2.5rem]">
+          <h3 className="text-lg font-black text-slate-800 mb-6 tracking-tight">Food Items Management</h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <input
+              type="text"
+              placeholder="Food item name (e.g. Maize)"
+              value={newFoodItem.name}
+              onChange={e => setNewFoodItem({ ...newFoodItem, name: e.target.value })}
+              className="h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600"
+              maxLength={50}
+            />
+            <input
+              type="number"
+              placeholder="Unit price (KSH)"
+              value={newFoodItem.unit_price}
+              onChange={e => setNewFoodItem({ ...newFoodItem, unit_price: e.target.value })}
+              className="h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600"
+              min="0"
+              step="0.01"
+            />
+            <Button onClick={addFoodItem} className="bg-emerald-600 text-white px-6 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-700">
+              <Plus size={16} className="mr-2" /> Add Food
+            </Button>
+          </div>
+
+          <div className="space-y-2 max-h-64 overflow-y-auto">
+            {foodItems.length > 0 ? (
+              foodItems.map(item => (
+                <div key={item.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div>
+                    <p className="font-black text-slate-800">{item.name}</p>
+                    <p className="text-sm text-slate-500">KSH {item.unit_price?.toFixed(2) || '0.00'} per unit</p>
+                  </div>
+                  <Button
+                    onClick={async () => {
+                      if (confirm('Delete this food item?')) {
+                        await fetch(`/api/finance/food-items/${item.id}`, { method: 'DELETE', credentials: 'include' });
+                        setFoodItems(foodItems.filter(f => f.id !== item.id));
+                      }
+                    }}
+                    className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-xs font-bold"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-slate-400 italic py-8">No food items added yet</p>
+            )}
+          </div>
         </Card>
       )}
+
+      <Card className="p-10 bg-white border border-slate-100 shadow-2xl rounded-[2.5rem]">
+        <h3 className="text-lg font-black text-slate-800 mb-8 tracking-tight">Record Fee Payment by Class</h3>
+
+        <div className="mb-8 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2 block mb-3">Select Class</label>
+              <select
+                className="w-full h-12 px-6 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 font-black uppercase transition-all"
+                value={selectedClass}
+                onChange={e => {
+                  setSelectedClass(e.target.value);
+                  setFeeForm({});
+                  setCurrentPage(1);
+                  setSearchTerm('');
+                }}
+              >
+                <option value="">-- Select a Class --</option>
+                {classesInSystem.map(cls => <option key={cls} value={cls}>{cls}</option>)}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2 block mb-3">Term</label>
+                <select
+                  className="w-full h-12 px-3 rounded-lg bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 font-black text-xs uppercase"
+                  value={selectedTerm}
+                  onChange={e => setSelectedTerm(e.target.value)}
+                >
+                  <option value="">Select term</option>
+                  {availableTerms.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2 block mb-3">Year</label>
+                <select
+                  className="w-full h-12 px-3 rounded-lg bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 font-black text-xs uppercase"
+                  value={selectedYear}
+                  onChange={e => setSelectedYear(e.target.value)}
+                >
+                  <option value="">Select year</option>
+                  {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Status Legend */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3">💡 Fee Status Meanings:</p>
+            <div className="grid grid-cols-3 gap-3 text-[10px]">
+              <div>
+                <span className="font-bold text-blue-700">PAID</span> - Fee fully settled
+              </div>
+              <div>
+                <span className="font-bold text-amber-700">PENDING</span> - Payment not yet received
+              </div>
+              <div>
+                <span className="font-bold text-orange-700">PARTIAL</span> - Part payment received
+              </div>
+            </div>
+          </div>
+
+          {canShowList && (
+            <div>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-2 block mb-3">Search Student</label>
+              <input
+                type="text"
+                placeholder="Search by name or admission number..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 placeholder-slate-400"
+              />
+            </div>
+          )}
+        </div>
+
+        {canShowList && paginatedStudents.length > 0 ? (
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-slate-200">
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Student Name</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Admission No</th>
+                    <th className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Tuition (KSH)</th>
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Food brought (optional)</th>
+                    {foodItems.length > 0 && (
+                      <th colSpan={foodItems.length} className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Food Items (Units)</th>
+                    )}
+                    <th className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                    <th className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Total</th>
+                    <th className="px-6 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Action</th>
+                  </tr>
+                  {foodItems.length > 0 && (
+                    <tr className="bg-white border-b border-slate-100">
+                      <td colSpan={4}></td>
+                      {foodItems.map(item => (
+                        <td key={item.id} className="px-2 py-2 text-center text-[9px] text-slate-500 font-bold">
+                          {item.name}
+                          <br />
+                          <span className="text-[8px] text-slate-400">@ KSH {item.unit_price?.toFixed(2)}</span>
+                        </td>
+                      ))}
+                      <td colSpan={3}></td>
+                    </tr>
+                  )}
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {paginatedStudents.map(student => {
+                    const tuition = parseFloat(feeForm[student.id]?.tuition || '0');
+                    let foodCost = 0;
+                    for (const [foodId, qty] of Object.entries(feeForm[student.id]?.food || {})) {
+                      const food = foodItems.find(f => f.id === parseInt(foodId));
+                      if (food) {
+                        foodCost += food.unit_price * (parseInt(qty) || 0);
+                      }
+                    }
+                    const total = tuition + foodCost;
+
+                    return (
+                      <tr key={student.id} className="hover:bg-emerald-50/30 transition-colors">
+                        <td className="px-6 py-4 font-bold text-slate-900 text-sm">{student.name}</td>
+                        <td className="px-6 py-4 text-slate-600 font-mono text-xs">{student.admission_number}</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="number"
+                            placeholder="0"
+                            className="w-24 h-10 px-3 rounded-lg bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 font-black text-xs"
+                            value={feeForm[student.id]?.tuition || ''}
+                            onChange={e => handleFeeInputChange(student.id, 'tuition', e.target.value)}
+                            min="0"
+                            step="0.01"
+                          />
+                        </td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="text"
+                            placeholder="e.g., 2kg maize, beans"
+                            className="w-64 h-10 px-3 rounded-lg bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 font-bold text-xs"
+                            value={feeForm[student.id]?.foodBroughtText || ''}
+                            onChange={e => handleFeeInputChange(student.id, 'foodBroughtText', e.target.value)}
+                            maxLength={120}
+                          />
+                        </td>
+                        {foodItems.map(item => (
+                          <td key={item.id} className="px-2 py-4 text-center">
+                            <input
+                              type="number"
+                              placeholder="0"
+                              className="w-16 h-10 px-2 rounded-lg bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 font-black text-xs text-center"
+                              value={feeForm[student.id]?.food?.[item.id] || ''}
+                              onChange={e => handleFoodItemChange(student.id, item.id, e.target.value)}
+                              min="0"
+                            />
+                          </td>
+                        ))}
+                        <td className="px-6 py-4">
+                          <select
+                            className="w-full h-10 px-2 rounded-lg bg-slate-50 border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-600 font-black text-[10px]"
+                            value={feeForm[student.id]?.status || 'paid'}
+                            onChange={e => handleFeeInputChange(student.id, 'status', e.target.value)}
+                          >
+                            <option value="paid">PAID</option>
+                            <option value="pending">PENDING</option>
+                            <option value="partial">PARTIAL</option>
+                          </select>
+                        </td>
+                        <td className="px-6 py-4 text-center font-bold text-emerald-600 text-sm">
+                          KSH {total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <Button
+                            onClick={() => handleRecordFee(student.id)}
+                            disabled={savingStudentId === student.id}
+                            className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-emerald-700 disabled:opacity-50"
+                          >
+                            {savingStudentId === student.id ? <Loader2 size={14} className="animate-spin" /> : 'Record'}
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Controls */}
+            {filteredStudents.length > itemsPerPage && (
+              <div className="mt-8 flex items-center justify-between pt-6 border-t border-slate-100">
+                <span className="text-sm font-black text-slate-500">
+                  Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredStudents.length)} of {filteredStudents.length}
+                </span>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 disabled:opacity-50 hover:bg-slate-200 transition-all"
+                  >
+                    <ChevronLeft size={16} />
+                  </Button>
+                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => currentPage - 2 + i).filter(p => p > 0 && p <= totalPages).map(page => (
+                    <Button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={cn(
+                        "px-3 py-2 rounded-lg text-sm font-black transition-all",
+                        currentPage === page
+                          ? "bg-emerald-600 text-white"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      )}
+                    >
+                      {page}
+                    </Button>
+                  ))}
+                  <Button
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 disabled:opacity-50 hover:bg-slate-200 transition-all"
+                  >
+                    <ChevronRight size={16} />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
+        ) : selectedClass ? (
+          <div className="py-16 text-center text-slate-500">
+            <p className="font-bold italic">{searchTerm ? 'No matching students found' : `No students enrolled in ${selectedClass}`}</p>
+          </div>
+        ) : (
+          <div className="py-16 text-center text-slate-400">
+            <p className="font-bold italic">Select a class above to view students</p>
+          </div>
+        )}
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <Card className="col-span-1 md:col-span-3 p-12 bg-white border border-slate-100 shadow-2xl rounded-[3rem] flex items-center gap-12 group hover:border-emerald-100 transition-all">
@@ -3718,11 +4450,19 @@ const ExamsManagement = ({ role }: { role: string }) => {
   const [saving, setSaving] = useState(false);
   const [promoting, setPromoting] = useState(false);
   const [message, setMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Show 12 students per page for better UX with inline editing
 
   useEffect(() => {
-    fetch('/api/students', { credentials: 'include' }).then(res => res.json()).then(setStudents);
-    if ((user as any)?.teacherInfo?.classes?.length > 0) {
-      setSelectedClass((user as any).teacherInfo.classes[0]);
+    fetch('/api/students', { credentials: 'include' }).then(res => res.json()).then(data => {
+      // Handle both old format (array) and new format (object with data/pagination)
+      setStudents(Array.isArray(data) ? data : (data.data || []));
+    });
+
+    // If teacher, auto-select their assigned class
+    if ((user as any)?.role === 'teacher' && (user as any)?.teacherInfo?.classes?.length > 0) {
+      const teacherClass = (user as any).teacherInfo.classes[0];
+      setSelectedClass(teacherClass);
     }
   }, [user]);
 
@@ -3738,6 +4478,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
         edits[row.student_id] = { ...row };
       });
       setLocalEdits(edits);
+      setCurrentPage(1); // Reset to page 1 when fetching new results
     }
     setLoading(false);
   };
@@ -3747,6 +4488,9 @@ const ExamsManagement = ({ role }: { role: string }) => {
   }, [selectedClass, term, year, examType]);
 
   const filteredStudents = students.filter(s => s.class === selectedClass);
+  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const paginatedStudents = filteredStudents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   const currentAcademicSubjects = selectedClass ? getExamSubjectsForClass(selectedClass) : CBC_SUBJECTS;
 
   const getMetricLabel = (score: number | null) => {
@@ -3920,23 +4664,33 @@ const ExamsManagement = ({ role }: { role: string }) => {
             table { border-collapse: collapse; width: 100%; }
             th, td { border: 1px solid #e5e7eb; padding: 8px; text-align:left }
             th { background: #f8fafc; font-weight:700 }
+            @media print { body { padding: 0; } }
           </style>
         </head>
         <body>
-          <div class="logo"><img src="/logo.jpg" alt="logo"/> <div><h2>Changara Township</h2><div>${selectedClass} — ${term} ${year} — ${examType}</div></div></div>
+          <div class="logo"><img src="/icon-512.png" alt="School logo"/> <div><h2>Changara Township School</h2><div>${selectedClass} — ${term} ${year} — ${examType}</div></div></div>
           <table>
             <thead><tr>${headers.map(h => `<th style="padding:8px;border:1px solid #ddd">${h}</th>`).join('')}</tr></thead>
             <tbody>${tableRows}</tbody>
           </table>
+          <script>
+            window.addEventListener('load', () => {
+              setTimeout(() => {
+                window.print();
+              }, 150);
+            });
+            window.onafterprint = () => window.close();
+          </script>
         </body>
       </html>
     `;
 
-    const win = window.open('', '_blank', 'noopener');
+    const win = window.open('', '_blank');
     if (win) {
       win.document.open();
       win.document.write(html);
       win.document.close();
+      win.focus();
     }
   };
 
@@ -3981,14 +4735,22 @@ const ExamsManagement = ({ role }: { role: string }) => {
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{getFormattedToday()}</span>
             </div>
             <div className="flex flex-wrap gap-2">
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="bg-white px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-slate-200 outline-none shadow-sm"
-              >
-                <option value="">Select Grade</option>
-                {["Playgroup", "PP1", "PP2", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7 (JSS)", "Grade 8 (JSS)", "Grade 9 (JSS)"].map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
+              {(user as any)?.role === 'headteacher' ? (
+                // Headteacher can select any grade
+                <select
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
+                  className="bg-white px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-slate-200 outline-none shadow-sm"
+                >
+                  <option value="">Select Grade</option>
+                  {["Playgroup", "PP1", "PP2", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7 (JSS)", "Grade 8 (JSS)", "Grade 9 (JSS)"].map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              ) : (
+                // Teachers can only access their assigned class
+                <div className="bg-indigo-50 border border-indigo-200 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-indigo-700">
+                  {selectedClass || 'No class assigned'}
+                </div>
+              )}
               <select
                 value={examType}
                 onChange={(e) => setExamType(e.target.value)}
@@ -4072,7 +4834,7 @@ const ExamsManagement = ({ role }: { role: string }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                {filteredStudents.map(student => {
+                {paginatedStudents.map(student => {
                   const result = results.find(r => r.student_id === student.id);
                   const draft = localEdits[student.id] || result || {};
                   return (
@@ -4132,7 +4894,8 @@ const ExamsManagement = ({ role }: { role: string }) => {
                           className="w-full h-12 bg-slate-50 rounded-xl px-4 py-2 border-none outline-none focus:ring-4 focus:ring-indigo-600/10 text-xs font-medium resize-none group-hover:h-24 transition-all"
                           placeholder="Teacher commentary..."
                           value={draft.remarks ?? ''}
-                          onChange={(e) => handleLocalEdit(student.id, 'remarks', e.target.value)}
+                          onChange={(e) => handleLocalEdit(student.id, 'remarks', e.target.value.substring(0, 500))}
+                          maxLength={500}
                         />
                       </td>
                       <td className="px-10 py-6 text-right">
@@ -4150,13 +4913,52 @@ const ExamsManagement = ({ role }: { role: string }) => {
                     </tr>
                   );
                 })}
-                {filteredStudents.length === 0 && (
+                {paginatedStudents.length === 0 && (
                   <tr>
                     <td colSpan={currentAcademicSubjects.length + 3} className="px-10 py-20 text-center text-slate-300 italic font-medium">No learners enrolled in {selectedClass}.</td>
                   </tr>
                 )}
               </tbody>
             </table>
+
+            {/* Pagination Controls */}
+            {filteredStudents.length > itemsPerPage && (
+              <div className="px-6 py-4 border-t border-slate-100 bg-white flex items-center justify-between">
+                <span className="text-sm font-black text-slate-500">
+                  Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredStudents.length)} of {filteredStudents.length}
+                </span>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 disabled:opacity-50 hover:bg-slate-200 transition-all"
+                  >
+                    <ChevronLeft size={16} />
+                  </Button>
+                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => currentPage - 2 + i).filter(p => p > 0 && p <= totalPages).map(page => (
+                    <Button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={cn(
+                        "px-3 py-2 rounded-lg text-sm font-black transition-all",
+                        currentPage === page
+                          ? "bg-indigo-600 text-white"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      )}
+                    >
+                      {page}
+                    </Button>
+                  ))}
+                  <Button
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 disabled:opacity-50 hover:bg-slate-200 transition-all"
+                  >
+                    <ChevronRight size={16} />
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
           <div className="p-8 bg-slate-50/50 border-t border-slate-50 flex items-center gap-6">
             <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm">
